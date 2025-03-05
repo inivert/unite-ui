@@ -83,7 +83,9 @@ You can copy and paste the following code to create these components:
 ::CodeViewerTab{label="TreeIndicator.vue" icon="vscode-icons:file-type-vue" componentName="TreeIndicator" type="ui" id="file-tree"}
 ::
 
-```ts [index.ts]
+::CodeViewerTab{label="index.ts" language="typescript" componentName="index" type="ui" id="file-tree" extension="ts"}
+
+```ts
 import type { HTMLAttributes } from "vue";
 
 export interface TreeProps {

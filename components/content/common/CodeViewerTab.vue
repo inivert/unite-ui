@@ -9,7 +9,7 @@
       class="absolute right-0 top-0"
       :code="rawString"
     />
-    <code class="min-w-full overflow-auto px-2 leading-4">
+    <code class="min-w-full overflow-x-auto px-2 leading-4">
       <pre
         class="text-sm"
         v-html="codeHtml"
@@ -90,3 +90,24 @@ function updateImportPaths(code: string) {
   return magicString.toString();
 }
 </script>
+
+<style>
+/* CSS for code blocks with horizontal scrolling */
+pre {
+  white-space: pre !important;
+  word-wrap: normal !important;
+  overflow-x: auto !important;
+}
+
+code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+/* Ensure proper spacing */
+pre,
+code {
+  padding: 0;
+  margin: 0;
+}
+</style>

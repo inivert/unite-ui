@@ -24,9 +24,9 @@
 <script lang="ts" setup>
 import { cn } from "~/lib/utils";
 import {
-  inspiraImageParticles,
-  type InspiraImageParticle as ImageParticle,
-} from "./inspiraImageParticles";
+  uniteImageParticles,
+  type UniteImageParticle as ImageParticle,
+} from "./uniteImageParticles";
 
 type ParticleImageProps = {
   imageSrc: string;
@@ -54,7 +54,7 @@ let particles: ImageParticle;
 const imageParticleRef = ref<HTMLImageElement>();
 
 onMounted(() => {
-  const { InspiraImageParticle } = inspiraImageParticles();
-  particles = new InspiraImageParticle(imageParticleRef.value);
+  const { UniteImageParticle } = uniteImageParticles();
+  particles = new UniteImageParticle(imageParticleRef.value);
 });
 </script>

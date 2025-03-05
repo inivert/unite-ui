@@ -5,5 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-const imageUrl = "https://inspira-ui.com/images/apple-logo.svg";
+import LiquidLogo from "../../ui/liquid-logo/LiquidLogo.vue";
+
+const imageUrl = "/images/apple-logo.svg";
 </script>

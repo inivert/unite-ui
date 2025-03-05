@@ -14,7 +14,7 @@
   >
     <span class="pointer-events-none text-center text-8xl font-semibold leading-none"> 🌍 </span>
 
-    <Orbit
+    <UniteOrbit
       class="items-center justify-center border-none bg-transparent text-xl"
       :radius="190"
       :duration="20"
@@ -23,8 +23,8 @@
       path
     >
       🪨
-    </Orbit>
-    <Orbit
+    </UniteOrbit>
+    <UniteOrbit
       class="items-center justify-center border-none bg-transparent text-4xl"
       :radius="100"
       :delay="4"
@@ -32,8 +32,8 @@
       path
     >
       🌕
-    </Orbit>
-    <Orbit
+    </UniteOrbit>
+    <UniteOrbit
       class="items-center justify-center border-none bg-transparent text-4xl"
       :radius="250"
       :delay="4"
@@ -41,12 +41,12 @@
       path
     >
       🪐
-    </Orbit>
+    </UniteOrbit>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ORBIT_DIRECTION, type OrbitDirection } from "../ui/orbit";
+import { ORBIT_DIRECTION, type OrbitDirection, UniteOrbit } from "../ui/orbit";
 
 const direction = ref<OrbitDirection>(ORBIT_DIRECTION.Clockwise);
 

@@ -49,7 +49,7 @@ export type BookSize = keyof typeof BOOK_SIZE_MAP;
 export type BookRadius = keyof typeof BOOK_RADIUS_MAP;
 export type BookShadowSize = keyof typeof BOOK_SHADOW_SIZE_MAP;
 
-export { default as Book } from "./Book.vue";
-export { default as BookHeader } from "./BookHeader.vue";
-export { default as BookTitle } from "./BookTitle.vue";
-export { default as BookDescription } from "./BookDescription.vue";
+export { default as UniteBook } from "./Book.vue";
+export { default as UniteBookHeader } from "./BookHeader.vue";
+export { default as UniteBookTitle } from "./BookTitle.vue";
+export { default as UniteBookDescription } from "./BookDescription.vue";

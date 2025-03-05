@@ -10,7 +10,7 @@
   <div
     class="flex w-full max-w-7xl flex-col flex-wrap items-center justify-center gap-4 p-4 lg:flex-row"
   >
-    <PatternBackground
+    <UnitePatternBackground
       :animate="true"
       :direction="PATTERN_BACKGROUND_DIRECTION.TopRight"
       :variant="PATTERN_BACKGROUND_VARIANT.Dot"
@@ -23,9 +23,9 @@
         3D Card Hover Effect
       </h3>
       <CardDemo2 />
-    </PatternBackground>
+    </UnitePatternBackground>
 
-    <PatternBackground
+    <UnitePatternBackground
       :animate="true"
       :direction="PATTERN_BACKGROUND_DIRECTION.TopRight"
       :variant="PATTERN_BACKGROUND_VARIANT.Dot"
@@ -39,9 +39,9 @@
       </h3>
       <p>Hover below to reveal text</p>
       <TextHoverEffectDemo />
-    </PatternBackground>
+    </UnitePatternBackground>
 
-    <PatternBackground
+    <UnitePatternBackground
       :animate="true"
       :direction="PATTERN_BACKGROUND_DIRECTION.TopRight"
       :variant="PATTERN_BACKGROUND_VARIANT.Dot"
@@ -54,7 +54,7 @@
         Radiant Text
       </h3>
       <RadiantTextDemo />
-    </PatternBackground>
+    </UnitePatternBackground>
   </div>
 </template>
 
@@ -63,5 +63,6 @@ import {
   PATTERN_BACKGROUND_DIRECTION,
   PATTERN_BACKGROUND_SPEED,
   PATTERN_BACKGROUND_VARIANT,
+  UnitePatternBackground,
 } from "../inspira/ui/pattern-background";
 </script>

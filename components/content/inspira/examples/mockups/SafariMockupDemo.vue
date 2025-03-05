@@ -1,8 +1,8 @@
 <template>
   <div class="relative p-4">
     <SafariMockup
-      url="inspira-ui.com"
-      src="/images/inspira-ss.png"
+      url="unite-ui.com"
+      src="/images/unite-ss.png"
       class="size-full"
     />
   </div>

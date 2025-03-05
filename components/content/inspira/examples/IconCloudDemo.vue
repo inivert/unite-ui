@@ -1,10 +1,12 @@
 <template>
   <div class="grid place-content-center p-6">
-    <IconCloud :images="imageUrls" />
+    <UniteIconCloud :images="imageUrls" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { UniteIconCloud } from "~/components/content/inspira/ui/icon-cloud";
+
 const slugs = [
   "typescript",
   "javascript",

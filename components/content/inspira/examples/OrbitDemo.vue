@@ -5,7 +5,7 @@
     <span class="pointer-events-none text-center text-8xl font-semibold leading-none"> 🌍 </span>
 
     <!-- Inner Circles -->
-    <Orbit
+    <UniteOrbit
       class="size-[30px] items-center justify-center border-none bg-transparent"
       :duration="20"
       :delay="20"
@@ -13,8 +13,8 @@
       :direction="ORBIT_DIRECTION.CounterClockwise"
     >
       <WhatsAppIcon />
-    </Orbit>
-    <Orbit
+    </UniteOrbit>
+    <UniteOrbit
       class="size-[30px] items-center justify-center border-none bg-transparent"
       :duration="20"
       :delay="10"
@@ -23,18 +23,18 @@
       :direction="ORBIT_DIRECTION.CounterClockwise"
     >
       <NotionIcon />
-    </Orbit>
+    </UniteOrbit>
 
     <!-- Outer Circles (reverse) -->
-    <Orbit
+    <UniteOrbit
       class="size-[50px] items-center justify-center border-none bg-transparent"
       :radius="190"
       :duration="20"
       path
     >
       <GoogleDriveIcon />
-    </Orbit>
-    <Orbit
+    </UniteOrbit>
+    <UniteOrbit
       class="size-[50px] items-center justify-center border-none bg-transparent"
       :radius="190"
       :duration="20"
@@ -42,17 +42,17 @@
       :direction="ORBIT_DIRECTION.CounterClockwise"
     >
       <GitHubIcon />
-    </Orbit>
-    <Orbit
+    </UniteOrbit>
+    <UniteOrbit
       class="items-center justify-center border-none bg-transparent text-4xl"
       :radius="140"
       :delay="4"
     >
       🌕
-    </Orbit>
+    </UniteOrbit>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ORBIT_DIRECTION } from "../ui/orbit";
+import { ORBIT_DIRECTION, UniteOrbit } from "../ui/orbit";
 </script>

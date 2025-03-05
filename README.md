@@ -1,70 +1,78 @@
 <p align="center">
-  <a href="https://github.com/unovue/inspira-ui">
+  <a href="https://github.com/inivert/unite-ui">
     <img src="./logo.png" alt="Logo" width="150" />
   </a>
 </p>
 <h1 align="center">
-  Inspira UI
+  unite-ui
 </h1>
 <p align="center">
+  <em>A comprehensive Vue & Nuxt UI component library</em>
+</p>
+<p align="center">
   <b>Build beautiful websites using Vue & Nuxt.</b><br>
-  A curated collection of beautifully designed, reusable components for Vue & Nuxt.
+  A curated and expanded collection of beautifully designed, reusable components.
 </p>
 
 <p align="center">
-  <a href="https://github.com/unovue/inspira-ui/stargazers">
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/unovue/inspira-ui?style=social">
+  <a href="https://github.com/inivert/unite-ui/stargazers">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/inivert/unite-ui?style=social">
   </a>
-  <a href="https://github.com/unovue/inspira-ui/blob/main/LICENSE.md">
+  <a href="https://github.com/inivert/unite-ui/blob/main/LICENSE.md">
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg">
+  </a>
+  <a href="#-acknowledgments">
+    <img alt="Credits" src="https://img.shields.io/badge/UI%20Components-Collection-blue">
   </a>  
 </p>
 
 ---
 
-Welcome to [**Inspira UI**](https://inspira-ui.com), a community-driven project that brings the beauty and functionality of both [Aceternity UI](https://ui.aceternity.com) and [Magic UI](https://magicui.design) to the [Vue](https://vuejs.org) & [Nuxt](https://nuxt.com) ecosystem! While this project draws inspiration from these sources, it also includes unique custom components contributed by the community and created by us.
+Welcome to [**unite-ui**](https://unite-ui.com), a comprehensive UI component library for the [Vue](https://vuejs.org) & [Nuxt](https://nuxt.com) ecosystem! This project brings together a carefully curated collection of components inspired by various sources including [Aceternity UI](https://ui.aceternity.com) and [Magic UI](https://magicui.design), along with many unique custom components created specifically for this library.
 
-## ✨ About Inspira UI
+## ✨ About unite-ui
 
-Inspira UI is a collection of elegant, ready-to-use Vue components designed to be flexible and easy to integrate. Rather than being a traditional component library, it allows you to pick, customize, and adapt components as needed, giving you the freedom to shape them to fit your unique project requirements.
+unite-ui is an extensive collection of elegant, ready-to-use Vue components designed to be flexible and easy to integrate. We've organized these components for maximum usability and customization, giving you the freedom to shape them to fit your unique project requirements.
 
-## 🚀 Why Inspira UI?
+## 🚀 Why unite-ui?
 
-Inspira UI was created to fill a gap in the Vue community by providing a set of components with the aesthetics and functionality of both Aceternity UI and Magic UI. Our goal is to empower developers to build beautiful applications more efficiently while adding our own custom and community-driven designs.
+unite-ui was created to provide Vue developers with a comprehensive set of beautiful, functional components all in one place. Our goal is to empower developers to build stunning applications more efficiently with a well-organized library of components that covers a wide range of UI needs.
 
 ## 🎯 Key Features
 
-- **Free and Open Source**: Completely [open source](https://github.com/unovue/inspira-ui) under the MIT license.
+- **Free and Open Source**: Completely [open source](https://github.com/inivert/unite-ui) under the MIT license.
 - **Highly Configurable**: Tailor components to your specific design needs. Check out our [configuration guide](/api/configuration).
-- **Diverse Component Range**: A broad selection of [components](/components), inspired by Aceternity UI, Magic UI, and custom contributions, to help you build anything you imagine.
+- **Extensive Component Range**: A broad selection of [components](/components) to help you build anything you imagine.
+- **Well-Organized**: Components are logically categorized for easy discovery and use.
 - **Mobile Optimized**: Designed to look great on all devices.
 - **Nuxt Compatibility**: Fully compatible with [Nuxt](https://nuxt.com).
 
 ## 📚 Documentation
 
-For full documentation and usage examples, visit [**Inspira UI Documentation**](https://inspira-ui.com).
+For full documentation and usage examples, visit [**unite-ui Documentation**](https://unite-ui.com).
 
 ## 🙏 Acknowledgments
 
-A special thanks to:
+This project draws inspiration from several excellent UI libraries:
 
-- [Aceternity UI](https://ui.aceternity.com) for providing the inspiration and permission to adapt the original designs.
+- [Inspira UI](https://inspira-ui.com/) for some component ideas that we've expanded upon with our own implementations.
+- [Aceternity UI](https://ui.aceternity.com) for design inspiration and concepts.
 - [Magic UI](https://magicui.design) for its beautiful design inspiration.
 - [shadcn-vue](https://www.shadcn-vue.com) for the Vue port of shadcn-ui and contributions to some components.
 - [shadcn-docs-nuxt](https://github.com/ZTL-UwU/shadcn-docs-nuxt) for the beautifully crafted Nuxt documentation site.
 
 ## Author
 
-Hi, I'm [Rahul Vashishtha](https://rahulv.dev). I started Inspira UI to bring a similar experience to the Vue ecosystem, inspired by Aceternity UI, Magic UI, and community contributions. I'm continuously working on it to make it better. Feel free to check out my work on [GitHub](https://github.com/rahul-vashishtha) and join me on this journey [here](https://github.com/unovue/inspira-ui)!
+Hi, I'm [Carlos](https://github.com/inivert). I created unite-ui to provide the Vue community with a comprehensive collection of beautiful, functional components that are easy to integrate and customize. Building on the foundations laid by projects like Inspira UI, Aceternity UI, and Magic UI, I've focused on creating a library that emphasizes developer experience and design flexibility. I'm committed to maintaining and expanding this project with the help of the community. You can follow my work on [GitHub](https://github.com/inivert) and join this journey by contributing to [unite-ui](https://github.com/inivert/unite-ui)!
 
 ## 🌟 Contribute
 
-We welcome contributions! If you want to suggest features, report bugs, or help improve the project, feel free to open an issue or submit a pull request on [GitHub](https://github.com/unovue/inspira-ui).
+We welcome contributions! If you want to suggest features, report bugs, or help improve the project, feel free to open an issue or submit a pull request on [GitHub](https://github.com/inivert/unite-ui).
 
-You can also follow this [Contribution Guide](https://inspira-ui.com/getting-started/contribution).
+You can also follow this [Contribution Guide](https://unite-ui.com/getting-started/contribution).
 
 ## Sponsorship
 
 You can also support the development of the project by sponsoring the developer.
 
-Support and sponsor the maintainer here: [Support Inspira UI](https://github.com/sponsors/rahul-vashishtha)
+Support and sponsor the maintainer here: [Support unite-ui](https://github.com/sponsors/inivert)

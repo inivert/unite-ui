@@ -1,13 +1,15 @@
 <template>
   <div>
-    <IconLogoCloud
-      :logos
+    <UniteIconLogoCloud
+      :logos="logos"
       title="Trusted by Companies like"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { UniteIconLogoCloud } from "~/components/content/inspira/ui/logo-cloud";
+
 const logos = [
   {
     name: "Hume AI",

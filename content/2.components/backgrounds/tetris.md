@@ -10,28 +10,28 @@ description: Tetris background component, you can even click on a block to elimi
 This component uses the `nuxt-only` syntax with the `<ClientOnly>`. If you are not using Nuxt, you can simply remove it.
 ::
 
-::alert
+::alert{type="info"}
 **Note:** This component requires `theme-colors` as a dependency. Please install these using following commands.
 
-    ::code-group
+::code-group
 
-    ```bash [npm]
-    npm install theme-colors
-    ```
+```bash [npm]
+npm install theme-colors
+```
 
-    ```bash [pnpm]
-    pnpm install theme-colors
-    ```
+```bash [pnpm]
+pnpm install theme-colors
+```
 
-    ```bash [bun]
-    bun add theme-colors
-    ```
+```bash [bun]
+bun add theme-colors
+```
 
-    ```bash [yarn]
-    yarn add theme-colors
-    ```
-    ::
+```bash [yarn]
+yarn add theme-colors
+```
 
+::
 ::
 
 ## API

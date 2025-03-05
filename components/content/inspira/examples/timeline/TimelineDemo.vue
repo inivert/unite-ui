@@ -17,9 +17,12 @@
             {{ `Section ${index + 1}` }}
           </h3>
         </div>
-        <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-8">
-          Inspira UI gives you the freedom to design awesome website, in less time.
-        </p>
+        <TimelineItem>
+          <template #title>Freedom to Design</template>
+          <template #description>
+            unite-ui gives you the freedom to design awesome website, in less time.
+          </template>
+        </TimelineItem>
       </template>
     </Timeline>
   </div>

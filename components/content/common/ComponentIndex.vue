@@ -1,6 +1,5 @@
 <template>
   <div class="flex w-full flex-col flex-wrap gap-4">
-    <InspiraCarbonAds class="mb-8" />
     <UiAccordion
       v-if="categories.length > 0"
       v-model="openCategories"

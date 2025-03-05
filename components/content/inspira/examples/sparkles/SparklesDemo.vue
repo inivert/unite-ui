@@ -5,7 +5,7 @@
     <h1
       class="relative z-20 text-center text-3xl font-bold text-black lg:text-9xl md:text-7xl dark:text-white"
     >
-      Inspira UI
+      unite-ui
     </h1>
     <div class="relative h-40 w-[40rem]">
       <div

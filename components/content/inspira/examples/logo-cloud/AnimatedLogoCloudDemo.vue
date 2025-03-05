@@ -1,13 +1,15 @@
 <template>
   <div>
-    <AnimatedLogoCloud
-      :logos
+    <UniteAnimatedLogoCloud
+      :logos="logos"
       title="Trusted by Companies like"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { UniteAnimatedLogoCloud } from "~/components/content/inspira/ui/logo-cloud";
+
 const logos = [
   {
     name: "Vercel",

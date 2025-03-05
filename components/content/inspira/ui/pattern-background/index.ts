@@ -26,7 +26,7 @@ export interface BaseProps {
   speed?: ObjectValues<typeof PATTERN_BACKGROUND_SPEED>;
 }
 
-export { default as PatternBackground } from "./PatternBackground.vue";
+export { default as UnitePatternBackground } from "./PatternBackground.vue";
 
 export const PATTERN_BACKGROUND_VARIANT = {
   Grid: "grid",

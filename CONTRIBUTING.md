@@ -1,23 +1,26 @@
-Thank you for your interest in contributing to the **Inspira UI** project! Your contributions help make this project better for everyone. Please take a moment to read through these guidelines to ensure a smooth collaboration.
+Thank you for your interest in contributing to the **unite-ui** project! Your contributions help make this project better for everyone. Please take a moment to read through these guidelines to ensure a smooth collaboration.
 
 ## Table of Contents
 
-1. [Getting Started](#getting-started)
-2. [Code of Conduct](#code-of-conduct)
-3. [How to Contribute](#how-to-contribute)
-   - [Reporting Bugs](#reporting-bugs)
-   - [Suggesting Enhancements](#suggesting-enhancements)
-   - [Adding New Components](#adding-new-components)
-4. [Project Structure](#project-structure)
-5. [Style Guidelines](#style-guidelines)
-   - [Coding Standards](#coding-standards)
-   - [Component Format](#component-format)
-   - [Commit Messages](#commit-messages)
-6. [Documentation Guidelines](#documentation-guidelines)
-   - [Single-File Components](#single-file-components)
-   - [Multi-File Components](#multi-file-components)
-7. [Testing](#testing)
-8. [License](#license)
+- [Table of Contents](#table-of-contents)
+- [Getting Started](#getting-started)
+- [Code of Conduct](#code-of-conduct)
+- [How to Contribute](#how-to-contribute)
+  - [Reporting Bugs](#reporting-bugs)
+  - [Suggesting Enhancements](#suggesting-enhancements)
+  - [Adding New Components](#adding-new-components)
+- [Project Structure](#project-structure)
+- [Style Guidelines](#style-guidelines)
+  - [Coding Standards](#coding-standards)
+  - [Component Format](#component-format)
+  - [Commit Messages](#commit-messages)
+- [Documentation Guidelines](#documentation-guidelines)
+  - [Steps to Add a New Component](#steps-to-add-a-new-component)
+  - [Single-File Components](#single-file-components)
+  - [Multi-File Components](#multi-file-components)
+- [Testing](#testing)
+- [Additional Notes](#additional-notes)
+- [License](#license)
 
 ---
 
@@ -36,7 +39,7 @@ By participating in this project, you agree to abide by the [Code of Conduct](./
 
 ### Reporting Bugs
 
-If you find a bug, please open an [issue](https://github.com/unovue/inspira-ui/issues){:target="\_blank"} and include:
+If you find a bug, please open an [issue](https://github.com/inivert/unite-ui/issues){:target="\_blank"} and include:
 
 - A clear and descriptive title.
 - Steps to reproduce the issue.
@@ -45,7 +48,7 @@ If you find a bug, please open an [issue](https://github.com/unovue/inspira-ui/i
 
 ### Suggesting Enhancements
 
-We welcome suggestions for new features or improvements. Please open an [issue](https://github.com/unovue/inspira-ui/issues){:target="\_blank"} and include:
+We welcome suggestions for new features or improvements. Please open an [issue](https://github.com/inivert/unite-ui/issues){:target="\_blank"} and include:
 
 - A clear and descriptive title.
 - A detailed description of the enhancement.

@@ -1,18 +1,27 @@
 <template>
   <div class="grid place-content-center p-10">
-    <Book>
-      <BookHeader>
+    <UniteBook>
+      <UniteBookHeader>
         <Icon
           name="heroicons:book-open-solid"
           size="24"
         />
-      </BookHeader>
-      <BookTitle>
+      </UniteBookHeader>
+      <UniteBookTitle>
         <h1>The Book</h1>
-      </BookTitle>
-      <BookDescription>
+      </UniteBookTitle>
+      <UniteBookDescription>
         <p>Hover me to animate!</p>
-      </BookDescription>
-    </Book>
+      </UniteBookDescription>
+    </UniteBook>
   </div>
 </template>
+
+<script setup lang="ts">
+import {
+  UniteBook,
+  UniteBookHeader,
+  UniteBookTitle,
+  UniteBookDescription,
+} from "~/components/content/inspira/ui/book";
+</script>

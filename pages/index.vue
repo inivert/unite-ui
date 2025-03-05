@@ -1,34 +1,36 @@
 <template>
-  <div class="flex flex-col items-center justify-center px-4 py-6 font-heading md:px-8">
-    <HeroSection />
-    <div class="mb-16 flex w-full flex-col items-center">
-      <a
-        href="https://github.com/sponsors/rahul-vashishtha"
-        target="_blank"
-      >
-        <UiButton
-          variant="secondary"
-          class="gap-2 py-6 text-base"
+  <NuxtLayout>
+    <template #header>
+      <LayoutHeader />
+    </template>
+    <div class="flex flex-col items-center justify-center px-4 py-6 font-heading md:px-8">
+      <HeroSection />
+      <div class="mb-16 flex w-full flex-col items-center">
+        <a
+          href="https://github.com/sponsors/inivert"
+          target="_blank"
         >
-          Become a Sponsor <span class="text-red-500">♥️</span>
-        </UiButton>
-      </a>
+          <UiButton
+            variant="secondary"
+            class="gap-2 py-6 text-base"
+          >
+            Become a Sponsor <span class="text-red-500">♥️</span>
+          </UiButton>
+        </a>
+      </div>
+
+      <FeatureSection />
+      <HomePageExamples />
     </div>
-
-    <InspiraCarbonAds :is-home-page="true" />
-
-    <FeatureSection />
-    <HomePageExamples />
-    <Testimonials />
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 const config = useConfig();
 
 useSeoMeta({
-  title: `Inspira UI: Build beautiful websites using Vue & Nuxt`,
-  ogTitle: `Inspira UI: Build beautiful websites using Vue & Nuxt`,
+  title: `unite-ui: Build beautiful websites using Vue & Nuxt`,
+  ogTitle: `unite-ui: Build beautiful websites using Vue & Nuxt`,
   description:
     "Open Source components to build stunning animated interfaces effortlessly using Vue & Nuxt.",
   ogDescription:

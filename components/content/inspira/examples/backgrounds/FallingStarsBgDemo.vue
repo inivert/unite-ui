@@ -5,7 +5,7 @@
       :color="isDark ? '#FFF' : '#555'"
     />
     <div class="z-[1] flex items-center">
-      <span class="text-6xl font-bold text-black dark:text-white">Inspira UI</span>
+      <span class="text-6xl font-bold text-black dark:text-white">unite-ui</span>
     </div>
   </div>
 </template>

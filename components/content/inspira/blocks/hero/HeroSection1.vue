@@ -18,11 +18,11 @@
               class="w-52 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text text-transparent"
             />
           </span>
-          web experience
+          unite-ui is the new way to build beautiful website web experience
         </span>
 
         <span class="text-center text-xl">
-          Inspira UI is the new way to build beautiful website
+          unite-ui is the new way to build beautiful website
         </span>
 
         <div class="my-2 flex flex-row items-center justify-center gap-4">
@@ -39,7 +39,7 @@
           class="relative flex h-fit w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background p-px md:shadow-xl"
         >
           <img
-            src="/images/Inspira-dark.png"
+            src="/images/unite-ss.png"
             class="w-full rounded-md"
           />
           <BorderBeam

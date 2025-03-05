@@ -1,9 +1,9 @@
 export default defineAppConfig({
   shadcnDocs: {
     site: {
-      name: "Inspira UI",
+      name: "unite-ui",
       description: "Build beautiful websites using Vue & Nuxt.",
-      ogImage: "https://inspira-ui.com/og-image.png",
+      ogImage: "https://unite-ui.com/og-image.png",
     },
     theme: {
       customizable: true,
@@ -11,9 +11,10 @@ export default defineAppConfig({
       radius: 0.75,
     },
     header: {
-      title: "Inspira UI",
+      title: "unite-ui",
       showTitle: true,
       darkModeToggle: true,
+      border: false,
       logo: {
         light: "/logo.svg",
         dark: "/logo-dark.svg",
@@ -25,12 +26,12 @@ export default defineAppConfig({
             {
               title: "Getting Started",
               to: "/getting-started/introduction",
-              description: "Introduction to Inspira UI and its core concepts.",
+              description: "Introduction to unite-ui and its core concepts.",
             },
             {
               title: "Installation",
               to: "/getting-started/installation",
-              description: "Follow the step-by-step guide to install Inspira UI in your project.",
+              description: "Follow the step-by-step guide to install unite-ui in your project.",
             },
             {
               title: "Components",
@@ -43,6 +44,12 @@ export default defineAppConfig({
         {
           title: "Credits",
           links: [
+            {
+              title: "Inspira UI",
+              to: "https://inspira-ui.com/",
+              description: "For pioneering work in the Vue UI space that inspired this project.",
+              target: "_blank",
+            },
             {
               title: "Aceternity UI",
               to: "https://ui.aceternity.com/",
@@ -75,8 +82,8 @@ export default defineAppConfig({
           links: [
             {
               title: "GitHub",
-              to: "https://github.com/unovue/inspira-ui",
-              description: "Source code for Inspira UI.",
+              to: "https://github.com/inivert/unite-ui",
+              description: "Source code for unite-ui.",
               target: "_blank",
             },
             {
@@ -87,7 +94,7 @@ export default defineAppConfig({
             },
             {
               title: "Forum",
-              to: "https://github.com/unovue/inspira-ui/discussions",
+              to: "https://github.com/inivert/unite-ui/discussions",
               target: "_blank",
               description: "Join the forum",
             },
@@ -97,12 +104,12 @@ export default defineAppConfig({
       links: [
         {
           icon: "lucide:github",
-          to: "https://github.com/unovue/inspira-ui",
+          to: "https://github.com/inivert/unite-ui",
           target: "_blank",
         },
         {
           icon: "prime:twitter",
-          to: "https://x.com/rahulv_dev",
+          to: "https://x.com/cmejia_dev",
           target: "_blank",
         },
         {
@@ -112,7 +119,7 @@ export default defineAppConfig({
         },
         {
           icon: "ri:bluesky-line",
-          to: "http://bsky.app/profile/inspira-ui.com",
+          to: "http://bsky.app/profile/unite-ui.com",
           target: "_blank",
         },
       ],
@@ -125,20 +132,23 @@ export default defineAppConfig({
     main: {
       breadCrumb: true,
       showTitle: true,
+      padded: true,
+      centered: true,
+      maxWidth: "7xl",
     },
     footer: {
       credits: "Copyright © 2024 - 2025",
       links: [
         {
           icon: "lucide:globe",
-          to: "https://rahulv.dev",
-          title: "Maintained by rahulv.dev",
+          to: "https://github.com/inivert",
+          title: "Maintained by Carlos",
           target: "_blank",
         },
         {
           icon: "lucide:github",
           title: "Github",
-          to: "https://github.com/unovue/inspira-ui",
+          to: "https://github.com/inivert/unite-ui",
           target: "_blank",
         },
       ],
@@ -146,22 +156,17 @@ export default defineAppConfig({
     toc: {
       enable: true,
       title: "On This Page",
-      carbonAds: {
-        enable: true,
-        code: "CW7DEK37",
-        placement: "inspira-uicom",
-      },
       links: [
         {
           title: "Star on GitHub",
           icon: "lucide:star",
-          to: "https://github.com/unovue/inspira-ui",
+          to: "https://github.com/inivert/unite-ui",
           target: "_blank",
         },
         {
           title: "Create Issues",
           icon: "lucide:circle-dot",
-          to: "https://github.com/unovue/inspira-ui/issues",
+          to: "https://github.com/inivert/unite-ui/issues",
           target: "_blank",
         },
         {
@@ -173,19 +178,19 @@ export default defineAppConfig({
         {
           title: "Forum",
           icon: "lucide:newspaper",
-          to: "https://github.com/unovue/inspira-ui/discussions",
+          to: "https://github.com/inivert/unite-ui/discussions",
           target: "_blank",
         },
         {
           title: "Follow on X",
           icon: "prime:twitter",
-          to: "https://x.com/rahulv_dev",
+          to: "https://x.com/cmejia_dev",
           target: "_blank",
         },
         {
           title: "Follow on Bluesky",
           icon: "ri:bluesky-line",
-          to: "http://bsky.app/profile/inspira-ui.com",
+          to: "http://bsky.app/profile/unite-ui.com",
           target: "_blank",
         },
       ],

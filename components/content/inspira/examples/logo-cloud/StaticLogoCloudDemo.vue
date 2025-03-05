@@ -1,13 +1,15 @@
 <template>
   <div>
-    <StaticLogoCloud
-      :logos
+    <UniteStaticLogoCloud
+      :logos="logos"
       title="Sponsored By"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { UniteStaticLogoCloud } from "~/components/content/inspira/ui/logo-cloud";
+
 const logos = [
   {
     name: "Vercel",

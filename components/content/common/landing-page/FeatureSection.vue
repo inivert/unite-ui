@@ -60,7 +60,7 @@ const features = [
   {
     title: "Performant and Lightweight",
     description:
-      "Optimized for speed, Inspira UI’s components ensure fast loading times and a smooth user experience across all devices.",
+      "Optimized for speed, unite-ui's components ensure fast loading times and a smooth user experience across all devices.",
     icon: "lucide:zap",
   },
   {

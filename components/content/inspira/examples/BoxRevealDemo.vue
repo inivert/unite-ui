@@ -1,7 +1,7 @@
 <template>
   <div class="size-full max-w-lg items-center justify-center overflow-hidden p-8">
     <BoxReveal color="#E1251B">
-      <p class="text-[3.5rem] font-semibold">Inspira UI<span class="text-[#E1251B]">.</span></p>
+      <p class="text-[3.5rem] font-semibold">unite-ui<span class="text-[#E1251B]">.</span></p>
     </BoxReveal>
 
     <BoxReveal

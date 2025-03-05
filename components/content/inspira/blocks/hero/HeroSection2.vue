@@ -19,7 +19,7 @@
               class="rounded-xl bg-gradient-to-r from-pink-500 to-violet-500 px-4 py-1"
               text-end-color="hsl(var(--accent))"
             >
-              Inspira UI
+              unite-ui
             </TextHighlight>
           </span>
           <span class="flex w-full flex-row justify-center py-6 md:justify-start">
@@ -52,7 +52,7 @@
                   translate-z="25"
                   class="mt-2 max-w-sm text-sm text-neutral-500 dark:text-neutral-300"
                 >
-                  Subscribe to newletter & get latest update from Inspira UI.
+                  Subscribe to newsletter & get latest update from unite-ui.
                 </CardItem>
 
                 <CardItem class="mt-4 flex w-full flex-col gap-4">

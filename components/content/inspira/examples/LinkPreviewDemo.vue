@@ -19,14 +19,14 @@
     <p class="mx-auto max-w-3xl text-xl text-neutral-500 md:text-3xl dark:text-neutral-400">
       Visit
       <LinkPreview
-        url="https://inspira-ui.com"
+        url="https://unite-ui.com"
         :width="400"
         :height="200"
       >
         <span
           class="bg-gradient-to-br from-purple-500 to-pink-500 bg-clip-text font-bold text-transparent"
         >
-          Inspira UI
+          unite-ui
         </span>
       </LinkPreview>
       for more cool components

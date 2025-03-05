@@ -1,0 +1,83 @@
+/* Global styles for the header */
+body header,
+#__nuxt header,
+.layout-header,
+[class*="Header"] {
+  border-radius: 9999px !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light mode styles */
+body:not(.dark) header,
+body:not(.dark) #__nuxt header,
+body:not(.dark) .layout-header,
+body:not(.dark) [class*="Header"] {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+body:not(.dark) header *,
+body:not(.dark) #__nuxt header *,
+body:not(.dark) .layout-header *,
+body:not(.dark) [class*="Header"] * {
+  color: black !important;
+}
+
+/* Dark mode styles */
+body.dark header,
+body.dark #__nuxt header,
+body.dark .layout-header,
+body.dark [class*="Header"] {
+  background-color: black !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+body.dark header *,
+body.dark #__nuxt header *,
+body.dark .layout-header *,
+body.dark [class*="Header"] * {
+  color: white !important;
+}
+
+body.dark header img,
+body.dark #__nuxt header img,
+body.dark .layout-header img,
+body.dark [class*="Header"] img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Force all buttons and links in header to be white */
+body header a,
+body header button,
+#__nuxt header a,
+#__nuxt header button,
+.layout-header a,
+.layout-header button,
+[class*="Header"] a,
+[class*="Header"] button {
+  color: white !important;
+}
+
+/* Add floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+body header,
+#__nuxt header,
+.layout-header,
+[class*="Header"] {
+  animation: float 6s ease-in-out infinite !important;
+}

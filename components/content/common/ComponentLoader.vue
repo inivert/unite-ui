@@ -14,7 +14,6 @@
         />
       </CodeGroup>
     </ClientOnly>
-    <InspiraCarbonAds />
   </div>
 </template>
 
@@ -32,3 +31,16 @@ withDefaults(defineProps<Props>(), {
   icon: "lucide:square-terminal",
 });
 </script>
+
+<style>
+/* Ensure code blocks in the component loader have proper horizontal scrolling */
+:deep(pre) {
+  white-space: pre !important;
+  word-wrap: normal !important;
+  overflow-x: auto !important;
+}
+
+:deep(code) {
+  max-width: 100%;
+}
+</style>

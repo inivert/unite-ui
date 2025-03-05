@@ -83,3 +83,28 @@ function updateImportPaths(code: string) {
   return magicString.toString();
 }
 </script>
+
+<style>
+/* CSS for code blocks with horizontal scrolling */
+.prose pre {
+  overflow-x: auto !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+}
+
+.prose pre code {
+  display: inline-block;
+  min-width: 100%;
+}
+
+/* Ensure code blocks have proper padding and spacing */
+.prose pre {
+  padding: 1rem;
+}
+
+/* Override any conflicting styles */
+.prose pre span,
+.prose pre code span {
+  white-space: pre !important;
+}
+</style>

@@ -36,20 +36,15 @@
       class="text-center text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] md:text-6xl"
     >
       Build
-      <TextHighlight
-        class="rounded-xl bg-gradient-to-r from-pink-500 to-violet-500 px-4 py-1"
-        text-end-color="hsl(var(--accent))"
-      >
-        <FlipWords
-          :words="['beautiful', 'stunning']"
-          :duration="3000"
-        />
-      </TextHighlight>
+      <FlipWords
+        :words="['beautiful', 'stunning']"
+        :duration="3000"
+      />
       websites using Vue & Nuxt
     </h1>
 
     <span class="mt-4 text-center text-lg text-gray-600 sm:text-xl dark:text-gray-200">
-      Open Source components to build stunning animated interfaces effortlessly using Vue & Nuxt.
+      Curated list of amazing UI libraries and components for Nuxt developers.
     </span>
 
     <div class="mt-4 flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
@@ -57,7 +52,7 @@
         <UiButton> All Components </UiButton>
       </NuxtLink>
       <NuxtLink
-        to="https://github.com/unovue/inspira-ui"
+        to="https://github.com/inivert/unite-ui"
         target="_blank"
       >
         <UiButton variant="outline">

@@ -10,8 +10,8 @@ body:
         This form is only for submitting bug reports. If you have a usage question
         or are unsure if this is really a bug, make sure to:
 
-        - Check if there's already an existing issue for this bug in [Issues](https://github.com/unovue/inspira-ui/issues)
-        - Ask on [GitHub Discussions](https://github.com/unovue/inspira-ui/discussions) if you're unsure
+        - Check if there's already an existing issue for this bug in [Issues](https://github.com/inivert/unite-ui/issues)
+        - Ask on [GitHub Discussions](https://github.com/inivert/unite-ui/discussions) if you're unsure
   - type: textarea
     id: bug-env
     attributes:

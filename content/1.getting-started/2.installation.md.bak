@@ -1,0 +1,252 @@
+---
+title: Installation
+description: How to install unite-ui in your app.
+icon: "lucide:play"
+---
+
+This guide will help you install and set up unite-ui components in your Vue or Nuxt application.
+
+## Getting Started with unite-ui
+
+::alert{type="info"}
+**Compatibility:** Since unite-ui is largely based on Inspira UI and shares similar dependencies, the same setup will work for both the adapted components and Unite Originals. This means you can seamlessly use components from both collections in your project.
+::
+
+::alert{type="info"}
+**Note:** If you're using `shadcn-vue`, you can skip step `1` & `4`.
+::
+
+::steps
+
+### Set up `tailwindcss`
+
+::alert{type="info"}
+Currently Inspira UI supports TailwindCSS v3. Make sure you install TailwindCSS v3.
+::
+
+To begin, install `tailwindcss` using [this guide](https://v3.tailwindcss.com/docs/installation).
+
+### Add depedencies
+
+Install libraries for tailwindcss and utilities.
+
+::code-group
+
+```bash [npm]
+npm install -D @inspira-ui/plugins clsx tailwind-merge class-variance-authority tailwindcss-animate
+```
+
+```bash [pnpm]
+pnpm install -D @inspira-ui/plugins clsx tailwind-merge class-variance-authority tailwindcss-animate
+```
+
+```bash [bun]
+bun add -d @inspira-ui/plugins clsx tailwind-merge class-variance-authority tailwindcss-animate
+```
+
+```bash [yarn]
+yarn add --dev @inspira-ui/plugins clsx tailwind-merge class-variance-authority tailwindcss-animate
+```
+
+::
+
+Install VueUse and other supporting libraries.
+
+::code-group
+
+```bash [npm]
+npm install @vueuse/core motion-v
+```
+
+```bash [pnpm]
+pnpm install @vueuse/core motion-v
+```
+
+```bash [bun]
+bun add @vueuse/core motion-v
+```
+
+```bash [yarn]
+yarn add @vueuse/core motion-v
+```
+
+::
+
+Follow this guide to setup `motion-v` on [Vue](https://motion.unovue.com/getting-started/installation) and [Nuxt](https://motion.unovue.com/getting-started/installation)
+
+### Update `tailwind.config.js` and `tailwind.css`
+
+Add the following code to your `tailwind.config.js` and your `css` file:
+
+::code-group
+
+```ts [tailwind.config.js]
+import animate from "tailwindcss-animate";
+import { setupInspiraUI } from "@inspira-ui/plugins";
+
+export default {
+  darkMode: "selector",
+  safelist: ["dark"],
+  prefix: "",
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        xl: "calc(var(--radius) + 4px)",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+    },
+  },
+
+  plugins: [animate, setupInspiraUI],
+};
+```
+
+```css [tailwind.css]
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+```
+
+::
+
+### Setup `cn` utility
+
+Add following utility to `lib/utils.ts`
+
+```ts [utils.ts]
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export type ObjectValues<T> = T[keyof T];
+```
+
+::alert{type="success" icon="lucide:circle-check"}
+Great job! Your project is now configured to use unite-ui with Inspira UI dependencies.
+::
+
+### Start Using unite-ui 🚀
+
+Now, you can start using unite-ui components in your project. Choose the components you need, copy the code, and integrate them into your application.
+
+::card-grid{class="grid-cols-1 md:grid-cols-2 gap-4 mt-6"}
+::card{icon="lucide:component" to="/components" class="h-full"}
+#title
+Components
+#description
+Explore components adapted from Inspira UI
+::
+
+::card{icon="lucide:sparkles" to="/unite-originals" class="h-full"}
+#title
+Unite Originals
+#description
+Discover components and blocks created exclusively by the unite-ui team
+::
+::
+
+:read-more{title="List of all components" to="/components"}

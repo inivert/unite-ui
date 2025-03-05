@@ -15,3 +15,5 @@ export interface Props {
   radius?: number;
   path?: boolean;
 }
+
+export { default as UniteOrbit } from "./Orbit.vue";
