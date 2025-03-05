@@ -13,16 +13,16 @@
           <span>
             Building
             <FlipWords
-              :words="['beautiful', 'stunning', 'amazing']"
+              :words="['innovative', 'powerful', 'responsive']"
               :duration="3000"
-              class="w-52 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text text-transparent"
+              class="inline-block w-52 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text text-transparent"
             />
           </span>
-          unite-ui is the new way to build beautiful website web experience
+          unite-ui is the ultimate toolkit for creating exceptional web experiences
         </span>
 
         <span class="text-center text-xl">
-          unite-ui is the new way to build beautiful website
+          Elevate your web projects with our modern component library
         </span>
 
         <div class="my-2 flex flex-row items-center justify-center gap-4">

@@ -37,7 +37,31 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      meta: [],
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+      title: "unite-ui: Build beautiful websites using Vue & Nuxt",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Open Source components to build stunning animated interfaces effortlessly using Vue & Nuxt.",
+        },
+        { name: "format-detection", content: "telephone=no" },
+        { name: "theme-color", content: "#000000" },
+
+        // Open Graph / Facebook
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "unite-ui" },
+
+        // Twitter
+        { name: "twitter:site", content: "@cmejia_dev" },
+        { name: "twitter:creator", content: "@cmejia_dev" },
+      ],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+      ],
       style: [
         {
           children: `

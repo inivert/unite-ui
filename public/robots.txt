@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://unite-ui.com/sitemap.xml
+
+# Prevent crawling of specific directories
+Disallow: /node_modules/
+Disallow: /.github/
+Disallow: /.nuxt/
+Disallow: /.output/ 

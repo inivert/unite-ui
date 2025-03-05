@@ -37,16 +37,26 @@
     >
       Build
       <FlipWords
-        :words="['beautiful', 'stunning']"
+        :words="[
+          'modern',
+          'dynamic',
+          'responsive',
+          'beautiful',
+          'stunning',
+          'elegant',
+          'creative',
+          'innovative',
+        ]"
         :duration="3000"
+        class="inline-block min-w-[150px]"
       />
       websites using Vue & Nuxt
     </h1>
 
     <span class="mt-4 text-center text-lg text-gray-600 sm:text-xl dark:text-gray-200">
-      Curated list of amazing UI libraries and components for Nuxt developers.
+      Curated list of amazing UI libraries and components for Nuxt developers, inspired by Inspira
+      UI
     </span>
-
     <div class="mt-4 flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
       <NuxtLink to="/components">
         <UiButton> All Components </UiButton>

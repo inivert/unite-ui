@@ -40,21 +40,6 @@
       <p>Hover below to reveal text</p>
       <TextHoverEffectDemo />
     </UnitePatternBackground>
-
-    <UnitePatternBackground
-      :animate="true"
-      :direction="PATTERN_BACKGROUND_DIRECTION.TopRight"
-      :variant="PATTERN_BACKGROUND_VARIANT.Dot"
-      class="flex h-fit w-full flex-col items-center gap-4 overflow-hidden rounded-lg border px-4 py-8"
-      :speed="PATTERN_BACKGROUND_SPEED.Slow"
-    >
-      <h3
-        class="relative z-20 bg-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text py-8 text-3xl font-bold text-transparent"
-      >
-        Radiant Text
-      </h3>
-      <RadiantTextDemo />
-    </UnitePatternBackground>
   </div>
 </template>
 
