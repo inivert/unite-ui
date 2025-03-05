@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/inivert/unite-ui">
-    <img src="./logo.png" alt="Logo" width="150" />
+    <img src="./logo-dark.png" alt="Logo" width="150" />
   </a>
 </p>
 <h1 align="center">
@@ -70,6 +70,37 @@ Hi, I'm [Carlos](https://github.com/inivert). I created unite-ui to provide the 
 We welcome contributions! If you want to suggest features, report bugs, or help improve the project, feel free to open an issue or submit a pull request on [GitHub](https://github.com/inivert/unite-ui).
 
 You can also follow this [Contribution Guide](https://unite-ui.com/getting-started/contribution).
+
+## 🎨 Submit Your Component
+
+We're excited to showcase your designs! unite-ui is more than just a component library—it's a community of designers and developers. Here's how you can submit your own component:
+
+### How to Submit
+
+1. **Study the Repository Structure**: Explore how components are organized in the project. Each component typically has:
+
+   - Component file(s) in `components/content/inspira/ui/[component-name]/`
+   - Example usage in `components/content/inspira/examples/`
+   - Documentation in `content/2.components/[category]/[component-name].md`
+
+2. **Create Your Component**: Build a Vue component that follows our code style and quality standards.
+
+3. **Document It**: Create a markdown file following our documentation pattern, including:
+
+   - Title and description
+   - Component preview
+   - API documentation
+   - Usage examples
+   - Code snippets
+
+4. **Submit a PR**: Open a pull request with your component, example, and documentation.
+
+### Recognition Guidelines
+
+- **Original Designs**: Components featuring original designs will be fully credited to you as the creator in the documentation and our contributors list.
+- **Inspired Designs**: If your component is inspired by existing work, clearly indicate the source of inspiration in the documentation. You'll still be credited for the implementation and adaptation.
+
+This is a great way to gain recognition in the Vue/Nuxt community and help fellow developers create beautiful interfaces!
 
 ## Sponsorship
 
