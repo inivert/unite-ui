@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/inivert/unite-ui">
-    <img src="./logo-dark.png" alt="Logo" width="150" />
+    <img src="./public/og-image.png" alt="Logo" width="150" />
   </a>
 </p>
 <h1 align="center">
