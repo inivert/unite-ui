@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 const highlightElement = ref<HTMLElement | null>(null);
 
 // Function to get computed color from CSS variable if needed
-const getComputedColor = (colorValue: string): string => {
+function getComputedColor(colorValue: string): string {
   // If it's not a CSS variable reference, return as is
   if (!colorValue.includes("var(")) return colorValue;
 
@@ -40,7 +40,7 @@ const getComputedColor = (colorValue: string): string => {
   const computedColor = window.getComputedStyle(tempEl).color;
   document.body.removeChild(tempEl);
   return computedColor;
-};
+}
 
 onMounted(() => {
   if (!highlightElement.value) return;

@@ -111,7 +111,7 @@ onMounted(() => {
 }
 
 .dark .grid-transform:before {
-  background: radial-gradient(circle, #1f2937 0%, #020420 70%, transparent 100%);
+  background: radial-gradient(circle, #090909 0%, #020420 70%, transparent 100%);
 }
 
 .card {
@@ -171,13 +171,18 @@ onMounted(() => {
   transform: scale(1.05) translateX(-5px) translateY(-5px) translateZ(0);
 }
 
+:root {
+  --text-glow-start-color: v-bind("props.textGlowStartColor");
+  --text-glow-end-color: v-bind("props.textGlowEndColor");
+}
+
 @keyframes text-glow {
   0% {
-    filter: drop-shadow(0px 0px 2px v-bind(props.textGlowStartColor));
+    filter: drop-shadow(0px 0px 2px var(--text-glow-start-color));
   }
 
   100% {
-    filter: drop-shadow(0px 1px 8px v-bind(props.textGlowEndColor));
+    filter: drop-shadow(0px 1px 8px var(--text-glow-end-color));
   }
 }
 

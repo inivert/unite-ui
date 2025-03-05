@@ -10,36 +10,7 @@ code.hljs {
 .hljs {
   color: #24292e;
   background: #ffffff;
-  word-wrap: normal;
-  white-space: pre;
-  overflow-x: visible;
-  max-width: none;
 }
-
-/* Ensure code blocks in demos have proper scrolling */
-.ui-scroll-area {
-  overflow-x: auto !important;
-}
-
-.ui-scroll-area pre,
-.ui-scroll-area code {
-  white-space: pre !important;
-  word-wrap: normal !important;
-  overflow-wrap: normal !important;
-}
-
-/* Fix for code blocks in tabs */
-.ui-card pre {
-  white-space: pre !important;
-  word-wrap: normal !important;
-}
-
-/* Ensure code blocks have proper scrolling */
-pre,
-code {
-  max-width: 100%;
-}
-
 .hljs-doctag,
 .hljs-keyword,
 .hljs-meta .hljs-keyword,

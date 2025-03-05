@@ -41,46 +41,27 @@ export default defineNuxtConfig({
       style: [
         {
           children: `
-            :root:not(.dark) header {
-              background-color: white !important;
-              color: black !important;
-              border: 1px solid rgba(0, 0, 0, 0.2) !important;
-              border-radius: 9999px !important;
-            }
-            :root:not(.dark) header * { color: black !important; }
-            
-            .dark header {
-              background-color: black !important;
-              color: white !important;
-              border: 1px solid rgba(255, 255, 255, 0.4) !important;
-              border-radius: 9999px !important;
-            }
-            .dark header * { color: white !important; }
-            .dark header img { filter: brightness(0) invert(1) !important; }
-
-            /* Light mode styles */
-            :root:not(.dark) header {
-              background-color: white !important;
-              color: black !important;
-              border: 1px solid rgba(0, 0, 0, 0.2) !important;
+            /* Minimalistic header styling with subtle glass effect */
+            header, 
+            .shadcn-docs-header, 
+            .docs-header,
+            #__nuxt header {
+              /* Subtle transparency */
+              background-color: rgba(255, 255, 255, 0.8) !important;
+              /* Light blur effect */
+              backdrop-filter: blur(5px) !important;
+              /* Very subtle shadow */
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+              border-bottom: none !important;
             }
             
-            /* Dark mode styles - direct inverse of light mode */
-            .dark header {
-              background-color: black !important;
-              color: white !important;
-              border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            }
-            
-            /* Dropdown menu fixes */
-            .dark [data-radix-popper-content-wrapper] {
-              background-color: rgba(30, 30, 30, 0.95) !important;
-              border-color: rgba(255, 255, 255, 0.1) !important;
-            }
-            
-            :root:not(.dark) [data-radix-popper-content-wrapper] {
-              background-color: rgba(255, 255, 255, 0.95) !important;
-              border-color: rgba(0, 0, 0, 0.1) !important;
+            /* Dark mode styles */
+            .dark header,
+            .dark .shadcn-docs-header,
+            .dark .docs-header,
+            .dark #__nuxt header {
+              background-color: rgba(9, 9, 11, 0.8) !important;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
             }
           `,
         },
@@ -88,7 +69,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ["~/assets/css/global.css", "~/assets/css/custom.css", "~/assets/css/dropdown-fix.css"],
+  css: ["~/assets/css/code-theme.css", "~/assets/css/tailwind.css"],
 
   extends: ["shadcn-docs-nuxt"],
   compatibilityDate: "2024-07-06",

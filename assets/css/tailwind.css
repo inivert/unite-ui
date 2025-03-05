@@ -88,24 +88,4 @@
   body {
     @apply bg-background text-foreground;
   }
-
-  /* Ensure code blocks have proper horizontal scrolling */
-  pre {
-    white-space: pre !important;
-    word-wrap: normal !important;
-    overflow-x: auto !important;
-  }
-
-  code {
-    max-width: 100%;
-  }
-
-  /* Fix for code blocks in UI components */
-  .ui-scroll-area pre,
-  .ui-scroll-area code,
-  .ui-card pre,
-  .ui-card code {
-    white-space: pre !important;
-    word-wrap: normal !important;
-  }
 }

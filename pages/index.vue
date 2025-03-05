@@ -1,28 +1,23 @@
 <template>
-  <NuxtLayout>
-    <template #header>
-      <LayoutHeader />
-    </template>
-    <div class="flex flex-col items-center justify-center px-4 py-6 font-heading md:px-8">
-      <HeroSection />
-      <div class="mb-16 flex w-full flex-col items-center">
-        <a
-          href="https://github.com/sponsors/inivert"
-          target="_blank"
+  <div class="flex flex-col items-center justify-center px-4 py-6 font-heading md:px-8">
+    <HeroSection />
+    <div class="mb-16 flex w-full flex-col items-center">
+      <a
+        href="https://github.com/sponsors/inivert"
+        target="_blank"
+      >
+        <UiButton
+          variant="secondary"
+          class="gap-2 py-6 text-base"
         >
-          <UiButton
-            variant="secondary"
-            class="gap-2 py-6 text-base"
-          >
-            Become a Sponsor <span class="text-red-500">♥️</span>
-          </UiButton>
-        </a>
-      </div>
-
-      <FeatureSection />
-      <HomePageExamples />
+          Become a Sponsor <span class="text-red-500">♥️</span>
+        </UiButton>
+      </a>
     </div>
-  </NuxtLayout>
+
+    <FeatureSection />
+    <HomePageExamples />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -8,7 +8,7 @@ export default defineAppConfig({
     theme: {
       customizable: true,
       color: "zinc",
-      radius: 0.75,
+      radius: 0.5,
     },
     header: {
       title: "unite-ui",
