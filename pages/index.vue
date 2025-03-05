@@ -27,14 +27,14 @@
     </div>
     <div class="mb-16 flex w-full flex-col items-center">
       <a
-        href="https://github.com/sponsors/inivert"
+        href="https://x.com/cmejia_dev"
         target="_blank"
       >
         <UiButton
           class="gap-2 py-6 text-base"
           variant="secondary"
         >
-          Become a Sponsor <span class="text-red-500">♥️</span>
+          Become a hater <span class="text-red-500">♥️</span>
         </UiButton>
       </a>
     </div>
