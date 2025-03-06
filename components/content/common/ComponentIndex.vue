@@ -66,7 +66,7 @@ interface Category {
 }
 
 interface Props {
-  path?: "components" | "blocks";
+  path?: "components" | "blocks" | "unite-originals/fullstacks";
 }
 
 const props = withDefaults(defineProps<Props>(), {

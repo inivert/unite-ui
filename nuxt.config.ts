@@ -1,10 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  plugins: [],
+  plugins: ["~/plugins/register-components.ts"],
 
   modules: [
     "@nuxt/image",
+    "@nuxt/content",
     "nuxt-gtag",
     "@nuxt/eslint",
     "@nuxt/scripts",
@@ -13,6 +14,64 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
   ],
+
+  // Content module configuration
+  content: {
+    documentDriven: true,
+    navigation: {
+      fields: ["title", "description", "icon"],
+    },
+    experimental: {
+      clientDB: false,
+      cacheContents: false,
+    },
+    watch: {
+      ws: {
+        hostname: "localhost",
+      },
+    },
+  },
+
+  // Vite configuration - enable HMR for better development experience
+  vite: {
+    server: {
+      hmr: true,
+      watch: {
+        usePolling: true,
+        interval: 1000,
+      },
+    },
+  },
+
+  // Fix 503 errors by removing caching and increasing timeouts
+  nitro: {
+    // Enable timing information
+    timing: true,
+    future: {
+      nativeSWR: true, // Use native stale-while-revalidate
+    },
+    experimental: {
+      asyncContext: true, // Enable async context
+    },
+    routeRules: {
+      "/api/_content/**": {}, // Remove caching completely for content API
+      "/**": {
+        cors: true, // Enable CORS for all routes
+        headers: {
+          "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+        },
+      },
+    },
+  },
+
+  // Comment out the invalid router options
+  // router: {
+  //   options: {
+  //     prefetchLinks: false,
+  //   },
+  // },
 
   components: [
     {

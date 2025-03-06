@@ -10,10 +10,10 @@ description: Elevate website experience with unique hero blocks.
 
 #### Components used:
 
-- [Falling Stars Background](https://inspira-ui.com/components/backgrounds/falling-stars)
-- [Blur Reveal](https://inspira-ui.com/components/text-animations/blur-reveal)
-- [Flip Words](https://inspira-ui.com/components/text-animations/flip-words)
-- [Border Beam](https://inspira-ui.com/components/special-effects/border-beam)
+- [Falling Stars Background](https://unite-ui.com/components/backgrounds/falling-stars){target="_blank"}
+- [Blur Reveal](https://unite-ui.com/components/text-animations/blur-reveal){target="_blank"}
+- [Flip Words](https://unite-ui.com/components/text-animations/flip-words){target="_blank"}
+- [Border Beam](https://unite-ui.com/components/special-effects/border-beam){target="_blank"}
 
 ### Hero Section 2
 
@@ -22,7 +22,7 @@ description: Elevate website experience with unique hero blocks.
 
 #### Components used:
 
-- [Vortex Background](https://inspira-ui.com/components/backgrounds/vortex)
-- [Animated Tooltip](https://inspira-ui.com/components/miscellaneous/animated-tooltip)
-- [Text Highlight](https://inspira-ui.com/components/text-animations/text-highlight)
-- [3D Card](https://inspira-ui.com/components/cards/3d-card)
+- [Vortex Background](https://unite-ui.com/components/backgrounds/vortex){target="_blank"}
+- [Animated Tooltip](https://unite-ui.com/components/miscellaneous/animated-tooltip){target="_blank"}
+- [Text Highlight](https://unite-ui.com/components/text-animations/text-highlight){target="_blank"}
+- [3D Card](https://unite-ui.com/components/cards/3d-card){target="_blank"}

@@ -12,7 +12,6 @@
         <!-- Very subtle backdrop blur to maintain readability while keeping transparency -->
         <div class="absolute inset-0 -z-10 bg-black/5 backdrop-blur-sm"></div>
 
-        <h3 class="mb-4 text-center text-xl font-bold text-white">Liquid Logo Effect</h3>
         <div class="aspect-square w-full rounded-lg">
           <LiquidLogo
             :image-url="isDark ? '/nuxt-logo.svg' : '/nuxt-logo.svg'"

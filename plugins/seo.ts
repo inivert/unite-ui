@@ -40,20 +40,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Add default meta tags
   nuxtApp.hook("app:mounted", () => {
-    // Add preload for critical resources
-    const criticalResources = [
-      { href: "/logo.svg", as: "image", type: "image/svg+xml" },
-      { href: "/logo-dark.svg", as: "image", type: "image/svg+xml" },
-    ];
-
-    for (const resource of criticalResources) {
+    // Add favicon link if not already present
+    const faviconLink = document.querySelector('link[rel="icon"]');
+    if (!faviconLink) {
       const link = document.createElement("link");
-      link.rel = "preload";
-      link.href = resource.href;
-      link.as = resource.as;
-      if (resource.type) {
-        link.type = resource.type;
-      }
+      link.rel = "icon";
+      link.href = "/favicon.ico";
       document.head.appendChild(link);
     }
 

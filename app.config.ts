@@ -200,4 +200,8 @@ export default defineAppConfig({
       inAside: true,
     },
   },
+  nuxtLink: {
+    prefetchedClass: false,
+    prefetch: false,
+  },
 });

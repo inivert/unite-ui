@@ -76,12 +76,26 @@ onUnmounted(() => {
 
 function updateUniforms() {
   if (!glRef.value || !uniforms.value) return;
-  glRef.value.uniform1f(uniforms.value.u_edge, props.edge);
-  glRef.value.uniform1f(uniforms.value.u_patternBlur, props.patternBlur);
-  glRef.value.uniform1f(uniforms.value.u_time, 0);
-  glRef.value.uniform1f(uniforms.value.u_patternScale, props.patternScale);
-  glRef.value.uniform1f(uniforms.value.u_refraction, props.refraction);
-  glRef.value.uniform1f(uniforms.value.u_liquid, props.liquid);
+
+  // Add null checks for each uniform
+  if (uniforms.value.u_edge) {
+    glRef.value.uniform1f(uniforms.value.u_edge, props.edge);
+  }
+  if (uniforms.value.u_patternBlur) {
+    glRef.value.uniform1f(uniforms.value.u_patternBlur, props.patternBlur);
+  }
+  if (uniforms.value.u_time) {
+    glRef.value.uniform1f(uniforms.value.u_time, 0);
+  }
+  if (uniforms.value.u_patternScale) {
+    glRef.value.uniform1f(uniforms.value.u_patternScale, props.patternScale);
+  }
+  if (uniforms.value.u_refraction) {
+    glRef.value.uniform1f(uniforms.value.u_refraction, props.refraction);
+  }
+  if (uniforms.value.u_liquid) {
+    glRef.value.uniform1f(uniforms.value.u_liquid, props.liquid);
+  }
 }
 
 function initShader() {
@@ -170,9 +184,14 @@ function render(currentTime: number) {
 
   // Update the total animation time and time uniform
   totalAnimationTime.value += deltaTime * props.speed;
-  glRef.value!.uniform1f(uniforms.value.u_time, totalAnimationTime.value);
-  // Draw!
-  glRef.value!.drawArrays(glRef.value!.TRIANGLE_STRIP, 0, 4);
+
+  // Add null checks to prevent the error
+  if (glRef.value && uniforms.value && uniforms.value.u_time) {
+    glRef.value.uniform1f(uniforms.value.u_time, totalAnimationTime.value);
+    // Draw!
+    glRef.value.drawArrays(glRef.value.TRIANGLE_STRIP, 0, 4);
+  }
+
   // rAF
   renderId = requestAnimationFrame(render);
 }
@@ -192,15 +211,25 @@ function resizeCanvas() {
   const gl = glRef.value;
 
   if (!canvasEl || !gl || !uniforms.value) return;
-  const imgRatio = imageData.value ? imageData.value.width / imageData.value.height : 1;
-  gl.uniform1f(uniforms.value.u_img_ratio, imgRatio);
 
-  const side = 1000;
-  canvasEl.width = side * devicePixelRatio;
-  canvasEl.height = side * devicePixelRatio;
-  gl.viewport(0, 0, canvasEl.height, canvasEl.height);
-  gl.uniform1f(uniforms.value.u_ratio, 1);
-  gl.uniform1f(uniforms.value.u_img_ratio, imgRatio);
+  // Check if u_img_ratio uniform exists before using it
+  if (uniforms.value.u_img_ratio) {
+    const imgRatio = imageData.value ? imageData.value.width / imageData.value.height : 1;
+    gl.uniform1f(uniforms.value.u_img_ratio, imgRatio);
+
+    const side = 1000;
+    canvasEl.width = side * devicePixelRatio;
+    canvasEl.height = side * devicePixelRatio;
+    gl.viewport(0, 0, canvasEl.height, canvasEl.height);
+
+    // Add null checks for each uniform
+    if (uniforms.value.u_ratio) {
+      gl.uniform1f(uniforms.value.u_ratio, 1);
+    }
+    if (uniforms.value.u_img_ratio) {
+      gl.uniform1f(uniforms.value.u_img_ratio, imgRatio);
+    }
+  }
 }
 
 async function processImage() {
