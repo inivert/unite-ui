@@ -37,6 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
   speed: 0.3,
 });
 
+const emit = defineEmits(["loaded"]);
+
 const imageData = ref<ImageData | null>(null);
 const glRef = ref<WebGLRenderingContext | null>(null);
 const uniforms = ref<Record<string, WebGLUniformLocation>>({});
@@ -44,6 +46,8 @@ const totalAnimationTime = ref(0);
 const lastRenderTime = ref(0);
 const liquidLogoRef = ref<HTMLCanvasElement | null>(null);
 const processing = ref(false);
+const isVisible = ref(false);
+const animationPaused = ref(false);
 
 let renderId: number;
 let cleanUpTexture: (() => void) | undefined;
@@ -51,28 +55,78 @@ let cleanUpTexture: (() => void) | undefined;
 onMounted(async () => {
   processing.value = true;
 
-  await processImage();
+  // Use IntersectionObserver to only animate when visible
+  if (typeof IntersectionObserver !== "undefined") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible.value = entry.isIntersecting;
+          if (entry.isIntersecting && animationPaused.value) {
+            animationPaused.value = false;
+            animate();
+          } else if (!entry.isIntersecting && !animationPaused.value) {
+            animationPaused.value = true;
+            cancelAnimationFrame(renderId);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
 
+    if (liquidLogoRef.value) {
+      observer.observe(liquidLogoRef.value);
+    }
+  }
+
+  // Defer WebGL initialization to improve initial page load
+  await nextTick();
+
+  // Use requestIdleCallback if available to initialize during idle time
+  if (typeof window.requestIdleCallback !== "undefined") {
+    window.requestIdleCallback(
+      async () => {
+        await initializeWebGL();
+      },
+      { timeout: 1000 },
+    );
+  } else {
+    // Fallback to setTimeout for browsers that don't support requestIdleCallback
+    setTimeout(async () => {
+      await initializeWebGL();
+    }, 200);
+  }
+
+  window.addEventListener("resize", handleResize);
+});
+
+async function initializeWebGL() {
+  await processImage();
   initShader();
   updateUniforms();
   cleanUpTexture = await cleanTexture();
-
   processing.value = false;
-
-  window.addEventListener("resize", resizeCanvas);
-
   resizeCanvas();
 
-  animate();
-});
+  // Emit loaded event
+  emit("loaded");
+
+  if (isVisible.value) {
+    animate();
+  }
+}
 
 onUnmounted(() => {
-  window.removeEventListener("resize", resizeCanvas);
+  window.removeEventListener("resize", handleResize);
   cancelAnimationFrame(renderId);
   if (cleanUpTexture) {
     cleanUpTexture();
   }
 });
+
+// Debounced resize handler
+const handleResize = useDebounceFn(() => {
+  resizeCanvas();
+}, 200);
 
 function updateUniforms() {
   if (!glRef.value || !uniforms.value) return;
@@ -103,6 +157,7 @@ function initShader() {
   const gl = canvas?.getContext("webgl2", {
     antialias: true,
     alpha: true,
+    powerPreference: "low-power", // Use low power mode for better performance
   });
   if (!canvas || !gl) {
     // "Failed to initialize shader. Does your browser support WebGL2?";
@@ -179,11 +234,16 @@ function initShader() {
 }
 
 function render(currentTime: number) {
+  if (animationPaused.value) return;
+
   const deltaTime = currentTime - lastRenderTime.value;
   lastRenderTime.value = currentTime;
 
+  // Limit animation speed for better performance
+  const cappedDeltaTime = Math.min(deltaTime, 32); // Cap at ~30fps
+
   // Update the total animation time and time uniform
-  totalAnimationTime.value += deltaTime * props.speed;
+  totalAnimationTime.value += cappedDeltaTime * props.speed;
 
   // Add null checks to prevent the error
   if (glRef.value && uniforms.value && uniforms.value.u_time) {
@@ -197,6 +257,8 @@ function render(currentTime: number) {
 }
 
 function animate() {
+  if (animationPaused.value) return;
+
   // Kick off the render loop
   lastRenderTime.value = performance.now();
   renderId = requestAnimationFrame(render);
@@ -217,9 +279,10 @@ function resizeCanvas() {
     const imgRatio = imageData.value ? imageData.value.width / imageData.value.height : 1;
     gl.uniform1f(uniforms.value.u_img_ratio, imgRatio);
 
-    const side = 1000;
-    canvasEl.width = side * devicePixelRatio;
-    canvasEl.height = side * devicePixelRatio;
+    // Use a smaller canvas size for better performance
+    const side = Math.min(800, window.innerWidth);
+    canvasEl.width = side * Math.min(devicePixelRatio, 2);
+    canvasEl.height = side * Math.min(devicePixelRatio, 2);
     gl.viewport(0, 0, canvasEl.height, canvasEl.height);
 
     // Add null checks for each uniform
@@ -251,48 +314,38 @@ async function cleanTexture() {
     gl.deleteTexture(existingTexture);
   }
 
-  const imageTexture = gl.createTexture();
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+  // Create a new texture
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
 
-  // Set texture parameters before uploading the data
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  // Set texture parameters
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-  // Ensure power-of-two dimensions or use appropriate texture parameters
-  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  // Upload the image data to the texture
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    imageData.value.width,
+    imageData.value.height,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    imageData.value.data,
+  );
 
-  try {
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      imageData.value.width,
-      imageData.value.height,
-      0,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      imageData.value.data,
-    );
-
-    gl.uniform1i(uniforms.value.u_image_texture, 0);
-  } catch (e) {
-    // handle error
+  // Set the texture uniform
+  if (uniforms.value.u_texture) {
+    gl.uniform1i(uniforms.value.u_texture, 0);
   }
 
   return () => {
-    // Cleanup texture when component unmounts or imageData changes
-    if (imageTexture) {
-      gl.deleteTexture(imageTexture);
+    if (gl && texture) {
+      gl.deleteTexture(texture);
     }
   };
 }
-
-// Update uniforms when relevant props change
-watch(
-  () => [props.edge, props.patternBlur, props.patternScale, props.refraction, props.liquid],
-  updateUniforms,
-);
 </script>

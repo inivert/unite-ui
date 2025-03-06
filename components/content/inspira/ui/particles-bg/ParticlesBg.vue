@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMouse, useDevicePixelRatio } from "@vueuse/core";
+import { useMouse, useDevicePixelRatio, useRafFn } from "@vueuse/core";
 
 type Circle = {
   x: number;
@@ -30,6 +30,7 @@ type Props = {
   staticity?: number;
   ease?: number;
   class?: string;
+  refresh?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   staticity: 50,
   ease: 50,
   class: "",
+  refresh: false,
 });
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
@@ -48,6 +50,14 @@ const mouse = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
 const canvasSize = reactive<{ w: number; h: number }>({ w: 0, h: 0 });
 const { x: mouseX, y: mouseY } = useMouse();
 const { pixelRatio } = useDevicePixelRatio();
+const isVisible = ref(true);
+const rafPaused = ref(false);
+
+// Throttle mouse movement updates
+const throttledMouseX = ref(0);
+const throttledMouseY = ref(0);
+const throttleInterval = 50; // ms
+let lastMouseUpdate = 0;
 
 const color = computed(() => {
   // Remove the leading '#' if it's present
@@ -73,20 +83,59 @@ const color = computed(() => {
 
 onMounted(() => {
   if (canvasRef.value) {
-    context.value = canvasRef.value.getContext("2d");
+    context.value = canvasRef.value.getContext("2d", { alpha: true });
   }
 
   initCanvas();
-  animate();
-  window.addEventListener("resize", initCanvas);
+
+  // Use IntersectionObserver to only animate when visible
+  if (typeof IntersectionObserver !== "undefined") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible.value = entry.isIntersecting;
+          rafPaused.value = !entry.isIntersecting;
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    if (canvasContainerRef.value) {
+      observer.observe(canvasContainerRef.value);
+    }
+  }
+
+  // Start animation loop with useRafFn for better performance
+  const { pause, resume } = useRafFn(animate, { immediate: true });
+
+  watch(rafPaused, (paused) => {
+    if (paused) {
+      pause();
+    } else {
+      resume();
+    }
+  });
+
+  window.addEventListener("resize", handleResize);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", initCanvas);
+  window.removeEventListener("resize", handleResize);
 });
 
+// Debounced resize handler
+const handleResize = useDebounceFn(() => {
+  initCanvas();
+}, 200);
+
 watch([mouseX, mouseY], () => {
-  onMouseMove();
+  const now = Date.now();
+  if (now - lastMouseUpdate > throttleInterval) {
+    lastMouseUpdate = now;
+    throttledMouseX.value = mouseX.value;
+    throttledMouseY.value = mouseY.value;
+    onMouseMove();
+  }
 });
 
 function initCanvas() {
@@ -95,11 +144,11 @@ function initCanvas() {
 }
 
 function onMouseMove() {
-  if (canvasRef.value) {
+  if (canvasRef.value && isVisible.value) {
     const rect = canvasRef.value.getBoundingClientRect();
     const { w, h } = canvasSize;
-    const x = mouseX.value - rect.left - w / 2;
-    const y = mouseY.value - rect.top - h / 2;
+    const x = throttledMouseX.value - rect.left - w / 2;
+    const y = throttledMouseY.value - rect.top - h / 2;
 
     const inside = x < w / 2 && x > -w / 2 && y < h / 2 && y > -h / 2;
     if (inside) {
@@ -114,11 +163,15 @@ function resizeCanvas() {
     circles.value.length = 0;
     canvasSize.w = canvasContainerRef.value.offsetWidth;
     canvasSize.h = canvasContainerRef.value.offsetHeight;
-    canvasRef.value.width = canvasSize.w * pixelRatio.value;
-    canvasRef.value.height = canvasSize.h * pixelRatio.value;
+
+    // Use a lower pixel ratio for better performance
+    const effectivePixelRatio = Math.min(pixelRatio.value, 2);
+
+    canvasRef.value.width = canvasSize.w * effectivePixelRatio;
+    canvasRef.value.height = canvasSize.h * effectivePixelRatio;
     canvasRef.value.style.width = canvasSize.w + "px";
     canvasRef.value.style.height = canvasSize.h + "px";
-    context.value.scale(pixelRatio.value, pixelRatio.value);
+    context.value.scale(effectivePixelRatio, effectivePixelRatio);
   }
 }
 
@@ -155,7 +208,14 @@ function drawCircle(circle: Circle, update = false) {
     context.value.arc(x, y, size, 0, 2 * Math.PI);
     context.value.fillStyle = `rgba(${color.value.split(" ").join(", ")}, ${alpha})`;
     context.value.fill();
-    context.value.setTransform(pixelRatio.value, 0, 0, pixelRatio.value, 0, 0);
+    context.value.setTransform(
+      Math.min(pixelRatio.value, 2),
+      0,
+      0,
+      Math.min(pixelRatio.value, 2),
+      0,
+      0,
+    );
 
     if (!update) {
       circles.value.push(circle);
@@ -171,7 +231,8 @@ function clearContext() {
 
 function drawParticles() {
   clearContext();
-  const particleCount = props.quantity;
+  // Use a reduced quantity for better performance
+  const particleCount = Math.min(props.quantity, 200);
   for (let i = 0; i < particleCount; i++) {
     const circle = circleParams();
     drawCircle(circle);
@@ -190,8 +251,17 @@ function remapValue(
 }
 
 function animate() {
+  if (!isVisible.value || rafPaused.value) return;
+
   clearContext();
-  circles.value.forEach((circle, i) => {
+
+  // Process fewer particles per frame for better performance
+  const limit = Math.min(circles.value.length, 100);
+
+  for (let i = 0; i < limit; i++) {
+    const circle = circles.value[i];
+    if (!circle) continue;
+
     // Handle the alpha value
     const edge = [
       circle.x + circle.translateX - circle.size, // distance from left edge
@@ -243,7 +313,6 @@ function animate() {
         true,
       );
     }
-  });
-  window.requestAnimationFrame(animate);
+  }
 }
 </script>

@@ -82,11 +82,8 @@ const timeoutId = ref<number | null>(null);
 const maxWordWidth = ref(0);
 const maxWordHeight = ref(0);
 const isAnimating = ref(false);
-
-// Keep track of animation cycles
-function logWordState() {
-  // Silent debugging - removed console statements
-}
+const isVisible = ref(true);
+const isPaused = ref(false);
 
 // Separate methods for setting refs to avoid reactivity issues
 function setWordContainer(el: HTMLElement | null) {
@@ -108,6 +105,69 @@ function setLetterElement(el: HTMLElement | null) {
     letters.push(el);
   }
 }
+
+onMounted(() => {
+  // Use IntersectionObserver to pause animations when not visible
+  if (typeof IntersectionObserver !== "undefined" && container.value) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible.value = entry.isIntersecting;
+
+          if (entry.isIntersecting && isPaused.value) {
+            isPaused.value = false;
+            startTimeout();
+          } else if (!entry.isIntersecting && !isPaused.value) {
+            isPaused.value = true;
+            if (timeoutId.value) {
+              clearTimeout(timeoutId.value);
+              timeoutId.value = null;
+            }
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(container.value);
+  }
+
+  // Calculate dimensions and start animation
+  nextTick(() => {
+    calculateMaxDimensions();
+
+    // Start with the first word
+    if (wordContainers.value[0]) {
+      anime.set(wordContainers.value[0], {
+        opacity: 1,
+      });
+
+      const letters = lettersByWordIndex.value.get(0);
+      if (letters) {
+        anime({
+          targets: letters,
+          opacity: [0, 1],
+          translateY: [5, 0],
+          delay: anime.stagger(15),
+          duration: 180,
+          easing: "easeOutQuad",
+          complete: () => {
+            if (isVisible.value) {
+              startTimeout();
+            }
+          },
+        });
+      }
+    }
+  });
+});
+
+onBeforeUnmount(() => {
+  if (timeoutId.value) {
+    clearTimeout(timeoutId.value);
+    timeoutId.value = null;
+  }
+});
 
 // Function to measure all words and find the maximum dimensions
 function calculateMaxDimensions() {
@@ -175,18 +235,19 @@ function animateLettersIn(wordIndex: number) {
     scale: 1,
   });
 
-  // Animate each letter with faster timing
+  // Simplified animation for better performance
   anime({
     targets: letters,
-    opacity: [0, 1],
-    translateY: [5, 0],
-    delay: anime.stagger(15),
+    opacity: 1,
+    translateY: 0,
     duration: 180,
     easing: "easeOutQuad",
     complete: () => {
       isAnimating.value = false;
-      // Start timeout for next word
-      startTimeout();
+      // Start timeout for next word if visible
+      if (isVisible.value) {
+        startTimeout();
+      }
     },
   });
 }
@@ -202,8 +263,8 @@ function animateLettersOut(wordIndex: number) {
   // Quick fade out with minimal blur
   anime({
     targets: wordContainer,
-    opacity: [1, 0],
-    translateY: [0, -3],
+    opacity: 0,
+    translateY: -3,
     duration: 150,
     easing: "easeInOutQuad",
     complete: () => {
@@ -224,7 +285,7 @@ function animateLettersOut(wordIndex: number) {
 }
 
 function startAnimation() {
-  if (isAnimating.value) return;
+  if (isAnimating.value || isPaused.value) return;
   isAnimating.value = true;
 
   // Clear any existing timeouts
@@ -245,90 +306,16 @@ function startTimeout() {
     clearTimeout(timeoutId.value);
   }
 
+  if (!isVisible.value || isPaused.value) return;
+
   timeoutId.value = window.setTimeout(() => {
     startAnimation();
   }, props.duration);
 }
-
-function setupInitialState() {
-  // Reset all word containers visibility and state
-  wordContainers.value.forEach((container, index) => {
-    if (container) {
-      // Using anime.set to avoid reactivity issues and ensure no blur
-      anime.set(container, {
-        opacity: index === currentWordIndex.value ? 1 : 0,
-        scale: 1,
-        translateY: 0,
-        filter: "blur(0)",
-      });
-    }
-  });
-}
-
-function resetCollections() {
-  // Clear existing collection references to avoid stale data
-  wordElements.value = [];
-  wordContainers.value = Array(props.words.length);
-  lettersByWordIndex.value.clear();
-}
-
-function initializeAnimation() {
-  // Clear any previous timeouts
-  if (timeoutId.value) {
-    clearTimeout(timeoutId.value);
-    timeoutId.value = null;
-  }
-
-  // Wait for the DOM to be updated
-  nextTick(() => {
-    calculateMaxDimensions();
-    setupInitialState();
-    resetAllFilters();
-
-    // Only animate the first word in if we're starting fresh
-    if (!isAnimating.value) {
-      animateLettersIn(currentWordIndex.value);
-    }
-  });
-}
-
-onMounted(() => {
-  resetCollections();
-
-  // Wait for refs to be populated
-  nextTick(() => {
-    calculateMaxDimensions();
-    initializeAnimation();
-  });
-});
-
-onBeforeUnmount(() => {
-  if (timeoutId.value) {
-    clearTimeout(timeoutId.value);
-  }
-});
-
-// Watch for changes to the words prop
-watch(
-  () => props.words,
-  () => {
-    // Reset animation state
-    isAnimating.value = false;
-    currentWordIndex.value = 0;
-    resetCollections();
-
-    // Wait for the next tick to allow DOM updates
-    nextTick(() => {
-      calculateMaxDimensions();
-      initializeAnimation();
-    });
-  },
-  { deep: true },
-);
 </script>
 
-<style>
+<style scoped>
 .active-word {
-  position: relative !important;
+  opacity: 1;
 }
 </style>
