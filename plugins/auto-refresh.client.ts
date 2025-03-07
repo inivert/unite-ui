@@ -1,7 +1,7 @@
 // This plugin enables automatic page refresh when content changes
 export default defineNuxtPlugin(() => {
   // Only run in client-side and development mode
-  if (process.server || process.env.NODE_ENV !== "development") {
+  if (import.meta.server || process.env.NODE_ENV !== "development") {
     return;
   }
 
