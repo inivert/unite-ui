@@ -13,7 +13,10 @@
     "format:fix": "prettier . --write",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy": "node scripts/fix-case-sensitivity.js && nuxt build",
+    "deploy:docker": "docker build -t unite-ui .",
+    "deploy:docker:run": "docker run -p 3000:3000 unite-ui"
   },
   "dependencies": {
     "@number-flow/vue": "^0.4.3",
