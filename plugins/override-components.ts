@@ -1,7 +1,12 @@
 import { defineNuxtPlugin } from "#app";
-import CustomCodeSnippet from "~/components/content/custom/CodeSnippet.vue";
 
-export default defineNuxtPlugin((nuxtApp) => {
-  // Override the shadcn-docs-nuxt CodeSnippet component with our custom one
-  nuxtApp.vueApp.component("CodeSnippet", CustomCodeSnippet);
+// This plugin is now just a placeholder
+// We're using component directory priority in nuxt.config.ts to handle component overrides
+export default defineNuxtPlugin({
+  name: "override-components",
+  setup() {
+    // No need to do anything here anymore
+    // The components in ~/components/content/custom will take precedence
+    // over components with the same name from other directories or modules
+  },
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="flex size-full items-center justify-center py-2">
-    <Liquidcard class="flex flex-col items-center py-5 justify-center">
+    <liquidcard class="flex flex-col items-center justify-center py-5">
       <NuxtImg src="/logo-dark.svg" />
       <p
         class="mt-4 text-xl font-bold"
@@ -8,6 +8,6 @@
       >
         hover me
       </p>
-    </Liquidcard>
+    </liquidcard>
   </div>
 </template>

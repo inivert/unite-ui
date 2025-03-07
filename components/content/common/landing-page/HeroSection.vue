@@ -34,7 +34,7 @@
       @mouseleave="handleButtonLeave"
     >
       <div
-        class="relative flex items-center rounded-full bg-black px-6 py-2.5 transition-all duration-300 group-hover:bg-opacity-0 dark:bg-gray-900 dark:group-hover:bg-opacity-0"
+        class="relative flex items-center rounded-full bg-white/90 px-6 py-2.5 transition-all duration-300 group-hover:bg-opacity-0 dark:bg-gray-900 dark:group-hover:bg-opacity-0"
       >
         <div
           ref="rocketContainer"
@@ -43,18 +43,18 @@
           <SmartIcon
             ref="rocketIcon"
             name="lucide:rocket"
-            class="size-5 transition-transform duration-300 group-hover:rotate-45"
+            class="size-5 text-gray-800 transition-transform duration-300 group-hover:rotate-45 group-hover:text-white dark:text-white"
           />
         </div>
         <span
           ref="buttonText"
-          class="ml-2 font-medium text-white"
+          class="ml-2 font-medium text-gray-800 group-hover:text-white dark:text-white"
           >Get Started</span
         >
         <Icon
           ref="arrowIcon"
           name="lucide:arrow-right"
-          class="ml-2 size-4 transition-transform duration-300 group-hover:translate-x-1"
+          class="ml-2 size-4 text-gray-800 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white dark:text-white"
         />
 
         <!-- Animated particles on hover -->
@@ -157,7 +157,7 @@
       UI
     </span>
     <div class="mt-4 flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
-      <NuxtLink to="/components">
+      <NuxtLink to="/getting-started/introduction">
         <UiButton> All Components </UiButton>
       </NuxtLink>
       <NuxtLink
@@ -275,7 +275,7 @@ function animateRocketAndNavigate() {
   const timeline = anime.timeline({
     easing: "easeOutQuad",
     complete: () => {
-      router.push("/components");
+      router.push("/getting-started/introduction");
     },
   });
 

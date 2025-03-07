@@ -1,17 +1,23 @@
 <template>
   <div
     ref="refElement"
-    class="container-style duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] container relative isolate w-[320px] transition-all will-change-transform [aspect-ratio:17/21] [contain:layout_style] [perspective:1200px]"
+    class="container-style duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] container relative isolate w-[320px] transition-all will-change-transform [aspect-ratio:17/21] [contain:layout_style]"
     :class="{
       'theme-light': theme === 'light',
       'theme-dark': theme === 'dark',
       'card-hovered': isCardHovered,
     }"
+    :style="{
+      '--position-x': `${state.position.x}`,
+      '--position-y': `${state.position.y}`,
+      '--bg-x': `${state.background.x}%`,
+      '--bg-y': `${state.background.y}%`,
+    }"
     @pointermove="handlePointerMove"
   >
-    <div class="card-wrapper transform-style-preserve-3d relative transition-all duration-500">
+    <div class="card-wrapper relative transition-all duration-500" style="transform-style: preserve-3d;">
       <!-- Stacked sheets that appear on hover -->
-      <div class="sheet-stack transform-style-preserve-3d absolute inset-0">
+      <div class="sheet-stack absolute inset-0" style="transform-style: preserve-3d;">
         <div class="sheet sheet-4"></div>
         <div class="sheet sheet-3"></div>
         <div class="sheet sheet-2"></div>
@@ -20,7 +26,8 @@
 
       <!-- Main card -->
       <div
-        class="main-card duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] transform-style-preserve-3d relative grid h-full origin-center overflow-hidden rounded-lg border transition-all will-change-transform hover:shadow-lg hover:filter-none hover:[--border-opacity:0.8] hover:[--duration:200ms] hover:[--easing:linear]"
+        class="main-card duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] relative grid h-full origin-center overflow-hidden rounded-lg border transition-all will-change-transform hover:shadow-lg hover:filter-none hover:[--border-opacity:0.8] hover:[--duration:200ms] hover:[--easing:linear]"
+        style="transform-style: preserve-3d;"
         @pointerenter="handleCardEnter"
         @pointerleave="handleCardLeave"
       >
@@ -63,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { cn } from "~/lib/utils";
 
 interface GlareCardProps {
@@ -113,12 +121,13 @@ function handlePointerMove(event: PointerEvent) {
   }
 }
 
-function handlePointerEnter() {
+function handleCardEnter() {
   isPointerInside.value = true;
   wasPointerInside.value = false;
+  isCardHovered.value = true;
 
   // Set a timeout to check if the card is fully extended after the animation completes
-  useTimeoutFn(() => {
+  setTimeout(() => {
     if (isPointerInside.value && refElement.value) {
       refElement.value.style.setProperty("--duration", "0s");
       isFullyExtended.value = true;
@@ -126,23 +135,23 @@ function handlePointerEnter() {
   }, 500); // Match this with the sheet transition duration
 }
 
-function handlePointerLeave() {
+function handleCardLeave() {
   wasPointerInside.value = true;
   isPointerInside.value = false;
   isFullyExtended.value = false;
+  isCardHovered.value = false;
+  
   if (refElement.value) {
     refElement.value.style.removeProperty("--duration");
   }
 }
 
-function handleCardEnter() {
-  isCardHovered.value = true;
-  handlePointerEnter();
+function handlePointerEnter() {
+  handleCardEnter();
 }
 
-function handleCardLeave() {
-  isCardHovered.value = false;
-  handlePointerLeave();
+function handlePointerLeave() {
+  handleCardLeave();
 }
 </script>
 
@@ -191,7 +200,6 @@ function handleCardLeave() {
   box-shadow: 0 4px 8px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
-  transform-style: preserve-3d;
 }
 
 .color-shift-style {
@@ -332,17 +340,14 @@ function handleCardLeave() {
 }
 
 .container-style {
-  --position-x: v-bind(state.position.x);
-  --position-y: v-bind(state.position.y);
-  --bg-x: v-bind(state.background.x + "%");
-  --bg-y: v-bind(state.background.y + "%");
   --duration: 300ms;
   --border-opacity: 0.15;
   --color-opacity: 0.2;
   --accent-opacity: 0.6;
   --radius: 16px;
   --easing: ease;
-  --transition: var(--duration) var(--easing);
+  --delay: 0ms;
+  perspective: 1200px;
 }
 
 /* Animation for the color shift when not hovering */
@@ -463,13 +468,7 @@ function handleCardLeave() {
 }
 
 /* 3D Sheet Stack Effect */
-.transform-style-preserve-3d {
-  transform-style: preserve-3d;
-}
-
 .sheet-stack {
-  transform-style: preserve-3d;
-  transition: all 0.5s ease-out;
   z-index: 0;
 }
 
@@ -507,7 +506,6 @@ function handleCardLeave() {
 /* Hover effects for the card wrapper */
 .card-hovered .card-wrapper {
   transform: rotateX(13deg) rotateY(-3deg) translateZ(20px);
-  transform-style: preserve-3d;
 }
 
 /* Hover effects for the sheets - ensure they move exactly like the main card */
@@ -543,7 +541,6 @@ function handleCardLeave() {
   box-shadow: 0 4px 8px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
-  transform-style: preserve-3d;
 }
 
 /* Remove the individual card transformation since we're transforming the wrapper */

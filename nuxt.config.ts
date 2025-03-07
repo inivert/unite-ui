@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   plugins: [
-    "~/plugins/register-components.ts",
+    // Removed empty plugin: "~/plugins/register-components.ts",
     "~/plugins/override-components.ts",
     "~/plugins/component-cache.client.ts",
   ],
@@ -26,12 +26,13 @@ export default defineNuxtConfig({
       fields: ["title", "description", "icon"],
     },
     experimental: {
-      clientDB: false,
-      cacheContents: false,
+      clientDB: true, // Enable client DB for better performance
+      cacheContents: true, // Enable content caching
     },
     watch: {
       ws: {
         hostname: "localhost",
+        port: 4000,
       },
     },
   },
@@ -58,7 +59,11 @@ export default defineNuxtConfig({
       asyncContext: true, // Enable async context
     },
     routeRules: {
-      "/api/_content/**": {}, // Remove caching completely for content API
+      "/api/_content/**": {
+        cache: {
+          maxAge: 60 * 60, // Cache for 1 hour
+        },
+      },
       "/**": {
         cors: true, // Enable CORS for all routes
         headers: {
@@ -77,12 +82,46 @@ export default defineNuxtConfig({
   //   },
   // },
 
-  components: [
-    {
-      path: "~/components",
-      pathPrefix: false,
-    },
-  ],
+  components: {
+    dirs: [
+      // Add our custom components directory with higher priority
+      {
+        path: "~/components/content/custom",
+        prefix: "",
+        pathPrefix: false,
+        priority: 0, // Highest priority (lower number = higher priority)
+        global: true,
+      },
+      {
+        path: "~/components/content/unite-originals/ui",
+        prefix: "UniteOriginals",
+        pathPrefix: false,
+        priority: 1,
+        global: true,
+      },
+      {
+        path: "~/components/content/inspira/ui",
+        prefix: "Inspira",
+        pathPrefix: false,
+        priority: 1,
+        global: true,
+      },
+      {
+        path: "~/components/content/common",
+        prefix: "",
+        pathPrefix: false,
+        priority: 2,
+        global: true,
+      },
+      {
+        path: "~/components/global",
+        prefix: "",
+        pathPrefix: false,
+        priority: 3,
+        global: true,
+      },
+    ],
+  },
 
   runtimeConfig: {
     public: {},

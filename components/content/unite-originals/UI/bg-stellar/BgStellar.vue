@@ -9,10 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, reactive, computed, watch } from "vue";
+import { onMounted, onBeforeUnmount, ref, reactive, computed, watch, nextTick } from "vue";
 import { useDevicePixelRatio } from "@vueuse/core";
 import * as Matter from "matter-js";
-import anime from "animejs";
 
 type SplashParticle = {
   x: number;
@@ -38,7 +37,6 @@ type WaterDrop = {
   dy: number;
   body?: Matter.Body; // Matter.js physics body
   toRemove?: boolean; // Flag to mark for removal
-  animeInstance?: anime.AnimeInstance; // Anime.js instance for animation
 };
 
 type Props = {
@@ -48,7 +46,6 @@ type Props = {
   dropSize?: number;
   class?: string;
   cursorRadius?: number; // Radius of cursor interaction
-  cursorForce?: number; // Force of cursor repulsion
   debug?: boolean; // Show debug visuals
   splashParticles?: number; // Number of particles in splash
   wobbleAmount?: number; // Amount of wobble for water drops
@@ -63,7 +60,6 @@ const props = withDefaults(defineProps<Props>(), {
   dropSize: 5, // Slightly larger drops
   class: "",
   cursorRadius: 15, // Larger cursor interaction radius
-  cursorForce: 0.005, // Default cursor repulsion force
   debug: false, // Debug mode off by default
   splashParticles: 8, // Default number of particles in splash
   wobbleAmount: 0.3, // Default wobble amount
@@ -86,9 +82,6 @@ const frameBody = ref<Matter.Body>();
 const mousePosition = reactive({ x: 0, y: 0 });
 const isMouseInCanvas = ref(false);
 
-// Collision detection
-const collisionStarted = ref(false);
-
 // Animation timing
 const time = ref(0);
 
@@ -97,7 +90,10 @@ watch(
   () => props.collisionElement,
   (newElement) => {
     if (newElement && engine.value) {
-      createFrameBody();
+      // Use nextTick to ensure the DOM is updated before measuring
+      nextTick(() => {
+        createFrameBody();
+      });
     }
   },
   { immediate: true },
@@ -110,9 +106,9 @@ onMounted(() => {
 
   // Initialize Matter.js engine
   engine.value = Matter.Engine.create({
-    gravity: { x: 0, y: 0.5 }, // Light gravity for water drops
-    positionIterations: 6, // Increase position iterations for better collision detection
-    velocityIterations: 4, // Increase velocity iterations for smoother physics
+    gravity: { x: 0, y: 0.3 }, // Reduced gravity for smoother falling
+    positionIterations: 8, // Increased for better precision
+    velocityIterations: 6, // Increased for smoother movement
   });
 
   // Create cursor body
@@ -137,20 +133,43 @@ onMounted(() => {
   // Add cursor body to the world
   Matter.Composite.add(engine.value.world, cursorBody.value);
 
-  // Create frame body if collision element is provided
-  if (props.collisionElement) {
-    createFrameBody();
-  }
-
   // Set up collision detection
   Matter.Events.on(engine.value, "collisionStart", handleCollision);
 
   initCanvas();
   setupMouseEvents();
-  animate();
+
+  // Create frame body if collision element is provided
+  // Delay frame creation to ensure DOM is ready
+  nextTick(() => {
+    if (props.collisionElement) {
+      createFrameBody();
+    }
+
+    // Start animation after everything is set up
+    animate();
+  });
 
   window.addEventListener("resize", initCanvas);
+
+  // Add a ResizeObserver to track frame element size changes
+  if (props.collisionElement) {
+    const resizeObserver = new ResizeObserver(() => {
+      nextTick(() => {
+        createFrameBody();
+      });
+    });
+    resizeObserver.observe(props.collisionElement);
+  }
 });
+
+// Add a debug logging function with proper typing
+function debugLog(...args: unknown[]): void {
+  if (props.debug) {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+}
 
 function createFrameBody() {
   if (!props.collisionElement || !engine.value) return;
@@ -167,97 +186,100 @@ function createFrameBody() {
   if (!canvasRect) return;
 
   // Calculate position relative to the canvas
-  const x = rect.left - canvasRect.left + rect.width / 2;
-  const y = rect.top - canvasRect.top + rect.height / 2;
+  const x = rect.left - canvasRect.left;
+  const y = rect.top - canvasRect.top;
+  const width = rect.width;
+  const height = rect.height;
 
-  // Create frame parts - top, bottom, left, right edges instead of a single rectangle
-  // This creates a more realistic collision surface
-  const thickness = 4; // Thickness of the collision boundary
+  // Create frame parts with proper rounded corners
+  const thickness = 10; // Collision boundary thickness
+  const cornerRadius = 12; // Matches rounded-xl (12px)
+  const innerCornerRadius = 8; // Matches rounded-lg (8px)
 
-  // Top edge
-  const topEdge = Matter.Bodies.rectangle(
-    x,
-    y - rect.height / 2 + thickness / 2,
-    rect.width,
-    thickness,
-    {
-      isStatic: true,
-      restitution: 0.5,
-      friction: 0.1,
-      render: { visible: false },
-      collisionFilter: {
-        group: -1,
-        category: 0x0004,
-        mask: 0x0001,
-      },
-    },
-  );
+  // Create vertices for the frame shape with rounded corners
+  const vertices = [
+    // Top edge with rounded corners
+    { x: x + cornerRadius, y: y },
+    { x: x + width - cornerRadius, y: y },
+    // Top-right corner
+    ...createArc(x + width - cornerRadius, y + cornerRadius, cornerRadius, -Math.PI / 2, 0, 8),
+    // Right edge
+    { x: x + width, y: y + cornerRadius },
+    { x: x + width, y: y + height - cornerRadius },
+    // Bottom-right corner
+    ...createArc(
+      x + width - cornerRadius,
+      y + height - cornerRadius,
+      cornerRadius,
+      0,
+      Math.PI / 2,
+      8,
+    ),
+    // Bottom edge
+    { x: x + width - cornerRadius, y: y + height },
+    { x: x + cornerRadius, y: y + height },
+    // Bottom-left corner
+    ...createArc(
+      x + cornerRadius,
+      y + height - cornerRadius,
+      cornerRadius,
+      Math.PI / 2,
+      Math.PI,
+      8,
+    ),
+    // Left edge
+    { x: x, y: y + height - cornerRadius },
+    { x: x, y: y + cornerRadius },
+    // Top-left corner
+    ...createArc(x + cornerRadius, y + cornerRadius, cornerRadius, Math.PI, (3 * Math.PI) / 2, 8),
+  ];
 
-  // Bottom edge
-  const bottomEdge = Matter.Bodies.rectangle(
-    x,
-    y + rect.height / 2 - thickness / 2,
-    rect.width,
-    thickness,
-    {
-      isStatic: true,
-      restitution: 0.5,
-      friction: 0.1,
-      render: { visible: false },
-      collisionFilter: {
-        group: -1,
-        category: 0x0004,
-        mask: 0x0001,
-      },
-    },
-  );
-
-  // Left edge
-  const leftEdge = Matter.Bodies.rectangle(
-    x - rect.width / 2 + thickness / 2,
-    y,
-    thickness,
-    rect.height,
-    {
-      isStatic: true,
-      restitution: 0.5,
-      friction: 0.1,
-      render: { visible: false },
-      collisionFilter: {
-        group: -1,
-        category: 0x0004,
-        mask: 0x0001,
-      },
-    },
-  );
-
-  // Right edge
-  const rightEdge = Matter.Bodies.rectangle(
-    x + rect.width / 2 - thickness / 2,
-    y,
-    thickness,
-    rect.height,
-    {
-      isStatic: true,
-      restitution: 0.5,
-      friction: 0.1,
-      render: { visible: false },
-      collisionFilter: {
-        group: -1,
-        category: 0x0004,
-        mask: 0x0001,
-      },
-    },
-  );
-
-  // Create a compound body from the edges
-  frameBody.value = Matter.Body.create({
-    parts: [topEdge, bottomEdge, leftEdge, rightEdge],
+  // Create the frame body using vertices
+  frameBody.value = Matter.Bodies.fromVertices(x + width / 2, y + height / 2, [vertices], {
     isStatic: true,
+    restitution: 0.6,
+    friction: 0.02,
+    frictionAir: 0,
+    render: { visible: false },
+    collisionFilter: {
+      group: 0,
+      category: 0x0004,
+      mask: 0x0001,
+    },
+    label: "frame",
   });
 
   // Add frame body to the world
   Matter.Composite.add(engine.value.world, frameBody.value);
+
+  // Force an update to ensure collision detection is working
+  Matter.Engine.update(engine.value, 0);
+
+  // Log frame creation for debugging
+  debugLog("Frame body created:", frameBody.value);
+}
+
+// Helper function to create arc vertices
+function createArc(
+  centerX: number,
+  centerY: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number,
+  segments: number,
+): { x: number; y: number }[] {
+  const vertices = [];
+  const angleStep = (endAngle - startAngle) / segments;
+
+  for (let i = 0; i <= segments; i++) {
+    const angle = startAngle + angleStep * i;
+    vertices.push({
+      x: centerX + radius * Math.cos(angle),
+      y: centerY + radius * Math.sin(angle),
+    });
+  }
+
+  return vertices;
 }
 
 onBeforeUnmount(() => {
@@ -276,37 +298,61 @@ onBeforeUnmount(() => {
     Matter.Events.off(engine.value, "collisionStart", handleCollision);
     Matter.Engine.clear(engine.value);
   }
-
-  // Stop all anime.js animations
-  waterDrops.value.forEach((drop) => {
-    if (drop.animeInstance) {
-      drop.animeInstance.pause();
-    }
-  });
 });
 
 function handleCollision(event: Matter.IEventCollision<Matter.Engine>) {
   const pairs = event.pairs;
+
+  debugLog("Collision detected:", pairs.length, "pairs");
 
   for (let i = 0; i < pairs.length; i++) {
     const pair = pairs[i];
     let dropBody: Matter.Body | null = null;
     let isFrameCollision = false;
     let collisionPoint = { x: 0, y: 0 };
+    let collisionNormal = { x: 0, y: 0 };
+
+    // Store collision normal for better splash direction
+    if (pair.collision && pair.collision.normal) {
+      collisionNormal = pair.collision.normal;
+    }
 
     // Check if one of the bodies is the cursor
     if (pair.bodyA === cursorBody.value || pair.bodyB === cursorBody.value) {
       dropBody = pair.bodyA === cursorBody.value ? pair.bodyB : pair.bodyA;
-      collisionPoint = pair.collision.supports[0] || pair.bodyA.position;
+      collisionPoint =
+        pair.collision.supports && pair.collision.supports.length > 0
+          ? pair.collision.supports[0]
+          : dropBody.position;
+
+      debugLog("Cursor collision with:", dropBody.label);
     }
     // Check if one of the bodies is part of the frame
-    else if (
-      frameBody.value &&
-      (frameBody.value.parts.includes(pair.bodyA) || frameBody.value.parts.includes(pair.bodyB))
-    ) {
-      dropBody = frameBody.value.parts.includes(pair.bodyA) ? pair.bodyB : pair.bodyA;
-      isFrameCollision = true;
-      collisionPoint = pair.collision.supports[0] || dropBody.position;
+    else if (frameBody.value) {
+      // Check if either body is part of the frame compound body
+      const bodyAIsFrame =
+        pair.bodyA.parent === frameBody.value ||
+        frameBody.value.parts.includes(pair.bodyA) ||
+        (pair.bodyA.label && pair.bodyA.label.includes("frame"));
+
+      const bodyBIsFrame =
+        pair.bodyB.parent === frameBody.value ||
+        frameBody.value.parts.includes(pair.bodyB) ||
+        (pair.bodyB.label && pair.bodyB.label.includes("frame"));
+
+      if (bodyAIsFrame || bodyBIsFrame) {
+        // Determine which body is the water drop
+        dropBody = bodyAIsFrame ? pair.bodyB : pair.bodyA;
+        isFrameCollision = true;
+
+        // Get collision point - use support point if available, otherwise use drop position
+        collisionPoint =
+          pair.collision.supports && pair.collision.supports.length > 0
+            ? pair.collision.supports[0]
+            : dropBody.position;
+
+        debugLog("Frame collision with:", dropBody.label, "at point:", collisionPoint);
+      }
     }
 
     if (dropBody) {
@@ -317,32 +363,31 @@ function handleCollision(event: Matter.IEventCollision<Matter.Engine>) {
         const drop = waterDrops.value[dropIndex];
 
         // Create splash effect at the collision point
-        createSplash(collisionPoint.x || drop.x, collisionPoint.y || drop.y, drop.size);
+        createSplash(
+          collisionPoint.x || drop.x,
+          collisionPoint.y || drop.y,
+          drop.size,
+          collisionNormal,
+        );
 
-        // For frame collisions, we might want to keep the drop but change its velocity
+        // For frame collisions, remove the drop and create splash effect
         if (isFrameCollision) {
-          // Bounce the drop with reduced velocity
-          if (drop.body) {
-            const velocity = drop.body.velocity;
-            // Add some randomness to the bounce for more natural effect
-            Matter.Body.setVelocity(drop.body, {
-              x: velocity.x * -0.7 + (Math.random() - 0.5) * 1,
-              y: velocity.y * -0.5 + (Math.random() - 0.5) * 0.5,
-            });
-
-            // Increase wobble amount temporarily for a "splash" effect
-            drop.wobbleAmount = props.wobbleAmount * 2;
-
-            // Reset wobble amount after a short delay
-            setTimeout(() => {
-              if (!drop.toRemove) {
-                drop.wobbleAmount = props.wobbleAmount * (0.7 + Math.random() * 0.6);
-              }
-            }, 300);
-          }
-        } else {
-          // For cursor collisions, remove the drop and create a new one
           // Mark drop for removal
+          drop.toRemove = true;
+
+          // Remove the body from the world
+          if (engine.value && drop.body) {
+            Matter.Composite.remove(engine.value.world, drop.body);
+          }
+
+          // Create a new water drop to replace it
+          const newDrop = createWaterDrop(true);
+          waterDrops.value.push(newDrop);
+
+          // Remove the old drop from the array
+          waterDrops.value.splice(dropIndex, 1);
+        } else {
+          // For cursor collisions, handle as before
           drop.toRemove = true;
 
           // Remove the body from the world
@@ -362,20 +407,27 @@ function handleCollision(event: Matter.IEventCollision<Matter.Engine>) {
   }
 }
 
-function createSplash(x: number, y: number, size: number) {
+function createSplash(x: number, y: number, size: number, normal = { x: 0, y: 0 }) {
   // Create splash particles
   for (let i = 0; i < props.splashParticles; i++) {
-    const angle = Math.PI * 2 * (i / props.splashParticles);
-    const speed = 0.5 + Math.random() * 1.5;
-    const radius = Math.max(size, 1) * (0.5 + Math.random() * 0.5);
+    let angle;
+    if (normal.x !== 0 || normal.y !== 0) {
+      const baseAngle = Math.atan2(-normal.y, -normal.x);
+      angle = baseAngle + (Math.random() - 0.5) * Math.PI * 0.8; // Reduced spread
+    } else {
+      angle = Math.PI * 2 * (i / props.splashParticles);
+    }
+
+    const speed = 0.5 + Math.random() * 1.5; // Reduced speed for smoother splashes
+    const radius = Math.max(size * 0.4, 0.8) * (0.6 + Math.random() * 0.4);
     const life = 0;
-    const maxLife = 20 + Math.random() * 30;
+    const maxLife = 25 + Math.random() * 20; // Longer life for smoother fading
 
     splashParticlesList.value.push({
       x,
       y,
       radius,
-      alpha: 0.6 + Math.random() * 0.4,
+      alpha: 0.8 + Math.random() * 0.2, // Higher base opacity
       dx: Math.cos(angle) * speed,
       dy: Math.sin(angle) * speed,
       life,
@@ -383,20 +435,27 @@ function createSplash(x: number, y: number, size: number) {
     });
   }
 
-  // Add a few more random particles for a more chaotic splash effect
-  const extraParticles = Math.floor(Math.random() * 5) + 3;
+  // Fewer but more visible extra particles
+  const extraParticles = Math.floor(Math.random() * 4) + 3;
   for (let i = 0; i < extraParticles; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 0.8 + Math.random() * 2.2; // Faster than regular particles
-    const radius = Math.max(size * 0.7, 0.8) * (0.3 + Math.random() * 0.7);
+    let angle;
+    if (normal.x !== 0 || normal.y !== 0) {
+      const baseAngle = Math.atan2(-normal.y, -normal.x);
+      angle = baseAngle + (Math.random() - 0.5) * Math.PI;
+    } else {
+      angle = Math.random() * Math.PI * 2;
+    }
+
+    const speed = 0.8 + Math.random() * 1.8;
+    const radius = Math.max(size * 0.3, 0.6) * (0.4 + Math.random() * 0.6);
     const life = 0;
-    const maxLife = 15 + Math.random() * 20; // Shorter lifespan
+    const maxLife = 20 + Math.random() * 15;
 
     splashParticlesList.value.push({
       x,
       y,
       radius,
-      alpha: 0.7 + Math.random() * 0.3, // Slightly more opaque
+      alpha: 0.9 + Math.random() * 0.1,
       dx: Math.cos(angle) * speed,
       dy: Math.sin(angle) * speed,
       life,
@@ -484,44 +543,41 @@ function createWaterDrops() {
 }
 
 function createWaterDrop(atTop = false): WaterDrop {
-  // Position water drops at the top of the canvas
   const x = Math.random() * canvasSize.w;
   const y = atTop ? -20 - Math.random() * 100 : Math.random() * canvasSize.h;
 
-  const size = props.dropSize * (0.7 + Math.random() * 0.6);
-  const alpha = props.transparency * (0.8 + Math.random() * 0.2);
+  const size = props.dropSize * (0.8 + Math.random() * 0.4); // More consistent sizes
+  const alpha = props.transparency * (0.85 + Math.random() * 0.15); // More consistent transparency
 
-  // Add wobble properties for watery animation
+  // Smoother wobble animation
   const wobblePhase = Math.random() * Math.PI * 2;
-  const wobbleSpeed = 0.05 + Math.random() * 0.05;
-  const wobbleAmount = props.wobbleAmount * (0.7 + Math.random() * 0.6);
+  const wobbleSpeed = 0.03 + Math.random() * 0.02; // Slower wobble
+  const wobbleAmount = props.wobbleAmount * (0.5 + Math.random() * 0.3); // Reduced wobble
 
-  // Initial stretch factor (will be animated)
   const stretchFactor = 1.0;
 
-  // Slight horizontal drift
-  const dx = (Math.random() - 0.5) * 0.2;
-  const dy = props.speed * (0.8 + Math.random() * 0.4);
+  // More controlled horizontal movement
+  const dx = (Math.random() - 0.5) * 0.1; // Reduced horizontal drift
+  const dy = props.speed * (0.9 + Math.random() * 0.2); // More consistent vertical speed
 
-  // Create Matter.js body for the water drop
-  // Use a circle for the physics body
+  // Create Matter.js body with improved physics properties
   const body = Matter.Bodies.circle(x, y, size, {
-    restitution: 0.4, // Increase bounce for better collision response
-    friction: 0.01, // Add slight friction for more realistic physics
-    frictionAir: 0.01, // Some air resistance
-    density: 0.001, // Low density to make it light
-    slop: 0.05, // Reduce slop for more precise collisions
+    restitution: 0.3, // Reduced bounce
+    friction: 0.005, // Less friction
+    frictionAir: 0.001, // Less air resistance
+    density: 0.0005, // Lighter drops
+    slop: 0.02, // More precise collisions
+    label: "waterDrop",
     collisionFilter: {
       group: 1,
       category: 0x0001,
-      mask: 0x0006, // Allow collisions with cursor (0x0002) and frame (0x0004)
+      mask: 0x0006,
     },
   });
 
   // Set initial velocity
   Matter.Body.setVelocity(body, { x: dx, y: dy });
 
-  // Add body to the world
   if (engine.value) {
     Matter.Composite.add(engine.value.world, body);
   }
@@ -736,6 +792,11 @@ function drawDebug() {
         context.value.strokeStyle = colors[index % colors.length];
         context.value.lineWidth = 1;
         context.value.stroke();
+
+        // Add label to identify the part
+        context.value.fillStyle = "rgba(255, 255, 255, 0.8)";
+        context.value.font = "10px Arial";
+        context.value.fillText(part.label || `Part ${index}`, position.x - 20, position.y);
       });
 
       // Draw water drop collision bodies if debug is enabled
@@ -749,7 +810,28 @@ function drawDebug() {
           context.value.strokeStyle = "rgba(0, 0, 255, 0.5)";
           context.value.lineWidth = 1;
           context.value.stroke();
+
+          // Draw velocity vector
+          const velocity = drop.body.velocity;
+          const speed = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+          if (speed > 0.5) {
+            context.value.beginPath();
+            context.value.moveTo(position.x, position.y);
+            context.value.lineTo(position.x + velocity.x * 5, position.y + velocity.y * 5);
+            context.value.strokeStyle = "rgba(255, 0, 0, 0.7)";
+            context.value.lineWidth = 1;
+            context.value.stroke();
+          }
         }
+      });
+
+      // Draw splash particles for debugging
+      splashParticlesList.value.forEach((particle) => {
+        context.value!.beginPath();
+        context.value!.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.value!.strokeStyle = "rgba(255, 255, 0, 0.5)";
+        context.value!.lineWidth = 0.5;
+        context.value!.stroke();
       });
     }
   }
