@@ -3,7 +3,7 @@
     <!-- Container for both BgStellar and frame -->
     <div class="relative size-full">
       <!-- BgStellar positioned behind the frame -->
-      <UniteOriginalsBgStellar
+      <BgStellar
         color="FFFF99"
         class="absolute inset-0"
         :collision-element="frameRef"
@@ -66,6 +66,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import BgStellar from "~/components/content/unite-originals/ui/bg-stellar/BgStellar.vue";
 
 const frameRef = ref(null);
 </script>

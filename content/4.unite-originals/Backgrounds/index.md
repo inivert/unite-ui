@@ -3,53 +3,43 @@ title: Stellar Background
 description: A beautiful water drop background effect with physics-based collisions.
 ---
 
-
 A beautiful water drop background effect with physics-based collisions. The water drops splash when they touch the mouse cursor or collide with elements.
 
 ## Preview
 
-::ComponentLoader{label="Preview" componentName="BgStellarDemo" type="examples" id="backgrounds/bg-stellar" folder="unite-originals"}
+::ComponentLoader{label="Preview" componentName="BgStellarDemo" type="examples" id="backgrounds/bg-stellar"}
 ::
 
 ## Usage
 
 The Stellar Background component creates a dynamic water drop effect that can interact with other elements on the page. It uses Matter.js for physics-based collisions and animations.
 
-```vue
-<template>
-  <div class="relative h-96">
-    <BgStellar
-      color="FFFF99"
-      class="absolute inset-0"
-      :collision-element="frameRef"
-      :debug="false"
-      :quantity="40"
-      :drop-size="5"
-      :transparency="0.85"
-    />
+::CodeViewerTab{label="BgStellarDemo.vue" language="vue" componentName="BgStellarDemo" type="examples" id="backgrounds/bg-stellar"}
+::
 
-    <!-- Your content with a reference -->
-    <div
-      ref="frameRef"
-      class="relative z-10"
-    >
-      <!-- Content here -->
-    </div>
-  </div>
-</template>
+## Features
 
-<script setup>
-import { ref } from "vue";
-import BgStellar from "~/components/content/unite-originals/ui/bg-stellar/BgStellar.vue";
-
-const frameRef = ref(null);
-</script>
-```
+- **Interactive Water Drops**: Creates realistic water drop effects that respond to user interaction.
+- **Physics-Based Collisions**: Uses Matter.js to simulate realistic physics for water drop movements and collisions.
+- **Mouse Interaction**: Water drops splash when they touch the mouse cursor.
+- **Element Collisions**: Water drops can collide with specified elements on the page.
+- **Highly Customizable**: Adjust colors, quantity, size, speed, and other properties to match your design.
+- **Visual Effects**: Includes wobble effects and splash particles for enhanced realism.
+- **Debug Mode**: Optional debug mode to visualize collision boundaries.
 
 ## Component Code
 
-::CodeViewer{filename="BgStellar.vue" language="vue" componentName="BgStellar" type="ui" id="bg-stellar" folder="unite-originals"}
+::alert{type="info"}
+The component code is quite extensive as it uses Matter.js for physics simulations. You can view and copy all the necessary files below, might aswell split the file because its too big lol.
 ::
+
+:::code-group
+::CodeViewerTab{label="BgStellar.vue" language="vue" componentName="BgStellar" type="ui" id="bg-stellar"}
+::
+
+::CodeViewerTab{label="index.ts" language="typescript" componentName="index" type="ui" id="bg-stellar" extension="ts"}
+::
+:::
 
 ## Props
 

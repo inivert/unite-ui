@@ -1,5 +1,4 @@
-// This plugin has been disabled to prevent frequent page refreshes
-/*
+// This plugin enables automatic page refresh when content changes
 export default defineNuxtPlugin(() => {
   // Only run in client-side and development mode
   if (process.server || process.env.NODE_ENV !== "development") {
@@ -7,48 +6,74 @@ export default defineNuxtPlugin(() => {
   }
 
   // Set up a periodic check for updates
-  const checkInterval = 10000; // 10 seconds
+  const checkInterval = 2000; // 2 seconds - faster checks for better responsiveness
 
-  // Function to check if we need to reload the page
-  const checkForUpdates = () => {
-    // Create a timestamp to prevent caching
-    const timestamp = new Date().getTime();
+  // Store the current route path
+  let currentPath = window.location.pathname;
 
-    // Make a HEAD request to the current page with a cache-busting parameter
-    fetch(`${window.location.pathname}?_=${timestamp}`, { method: "HEAD" })
-      .then((response) => {
-        // Check if the response is OK
-        if (response.ok) {
-          // Get the last-modified header
-          const lastModified = response.headers.get("last-modified");
+  // Function to check if content has been updated
+  function checkForContentUpdates() {
+    try {
+      // Only check markdown content pages
+      if (!currentPath.endsWith(".md") && !currentPath.includes("/content/")) {
+        // Create a timestamp to prevent caching
+        const timestamp = new Date().getTime();
 
-          // If we have a last-modified header, check if it's newer than our last check
-          if (lastModified) {
-            const lastModifiedDate = new Date(lastModified);
-            const lastCheckDate = new Date(localStorage.getItem("lastCheckDate") || 0);
-
-            // If the page has been modified since our last check, reload
-            if (lastModifiedDate > lastCheckDate) {
-              console.log("Page has been updated. Reloading...");
-              window.location.reload();
+        // Make a request to the content API for the current page
+        fetch(`/api/_content/query?path=${currentPath}&_=${timestamp}`, {
+          headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
             }
+            return null;
+          })
+          .then((data) => {
+            // Check if we have content data
+            if (data && data.length > 0) {
+              const contentItem = data[0];
 
-            // Update the last check date
-            localStorage.setItem("lastCheckDate", new Date().toISOString());
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error checking for updates:", error);
-      });
-  };
+              // Get the last modified time from localStorage
+              const lastModifiedKey = `content-last-modified-${currentPath}`;
+              const storedLastModified = localStorage.getItem(lastModifiedKey);
+
+              // If we have a updatedAt field and it's different from what we stored, reload
+              if (
+                contentItem.updatedAt &&
+                (!storedLastModified || contentItem.updatedAt !== storedLastModified)
+              ) {
+                // eslint-disable-next-line no-console
+                console.log("Content has been updated. Reloading...");
+                localStorage.setItem(lastModifiedKey, contentItem.updatedAt);
+                window.location.reload();
+              }
+            }
+          });
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Error checking for content updates:", error);
+    }
+  }
 
   // Set up the interval to check for updates
-  const intervalId = setInterval(checkForUpdates, checkInterval);
+  const intervalId = setInterval(checkForContentUpdates, checkInterval);
+
+  // Also check when the route changes
+  const router = useRouter();
+  router.afterEach((to) => {
+    currentPath = to.path;
+    // Check for updates after a short delay to allow content to load
+    setTimeout(checkForContentUpdates, 500);
+  });
 
   // Clean up the interval when the page is unloaded
   window.addEventListener("beforeunload", () => {
     clearInterval(intervalId);
   });
 });
-*/

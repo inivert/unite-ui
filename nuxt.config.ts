@@ -27,24 +27,37 @@ export default defineNuxtConfig({
     },
     experimental: {
       clientDB: true, // Enable client DB for better performance
-      cacheContents: true, // Enable content caching
+      cacheContents: false, // Disable content caching for development to see changes immediately
+      stripQueryParameters: false, // Keep query parameters for better cache invalidation
     },
     watch: {
       ws: {
         hostname: "localhost",
         port: 4000,
+        reconnectInterval: 1000, // Reconnect more quickly
       },
+      fullTextSearchFields: ["title", "description", "body"], // Improve search capabilities
     },
   },
 
   // Vite configuration - enable HMR for better development experience
   vite: {
     server: {
-      hmr: true,
+      hmr: {
+        protocol: "ws",
+        host: "localhost",
+        port: 24678,
+        clientPort: 24678,
+        timeout: 1000,
+      },
       watch: {
         usePolling: true,
-        interval: 1000,
+        interval: 500, // Faster polling interval
+        ignored: ["**/node_modules/**", "**/.git/**"],
       },
+    },
+    optimizeDeps: {
+      exclude: ["fsevents"],
     },
   },
 
@@ -60,9 +73,7 @@ export default defineNuxtConfig({
     },
     routeRules: {
       "/api/_content/**": {
-        cache: {
-          maxAge: 60 * 60, // Cache for 1 hour
-        },
+        cache: false, // Disable cache for content API in development
       },
       "/**": {
         cors: true, // Enable CORS for all routes
@@ -70,7 +81,14 @@ export default defineNuxtConfig({
           "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "*",
+          "Cache-Control": "no-cache, no-store, must-revalidate", // Prevent caching
         },
+      },
+    },
+    devStorage: {
+      fs: {
+        driver: "fs",
+        base: "./.nuxt/content",
       },
     },
   },
