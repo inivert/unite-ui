@@ -29,10 +29,13 @@ RUN find ./components -type f -name "*.vue" -o -name "*.ts" | xargs grep -l "liq
 RUN pnpm run build
 
 # Production image
-FROM base AS runner
+FROM node:20-alpine AS runner
 ENV NODE_ENV=production
 
-# Copy built application
+# Set working directory
+WORKDIR /app
+
+# Copy only necessary files from the builder stage
 COPY --from=builder /app/.output /app/.output
 COPY --from=builder /app/public /app/public
 
