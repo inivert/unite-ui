@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  plugins: ["~/plugins/register-components.ts", "~/plugins/override-components.ts"],
+  plugins: [
+    "~/plugins/register-components.ts",
+    "~/plugins/override-components.ts",
+    "~/plugins/component-cache.client.ts",
+  ],
 
   modules: [
     "@nuxt/image",

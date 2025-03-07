@@ -24,33 +24,52 @@
         <div class="absolute inset-0 -z-10 bg-black/5 backdrop-blur-sm"></div>
 
         <div class="aspect-square w-full rounded-lg">
-          <ClientOnly>
-            <Suspense>
-              <LiquidLogo
-                :image-url="isDark ? '/nuxt-logo.svg' : '/nuxt-logo.svg'"
-                :pattern-scale="1.5"
-                :liquid="0.1"
-                :speed="0.3"
-                :refraction="0.02"
-                :edge="0.4"
-                @loaded="handleLogoLoaded"
-              />
-              <template #fallback>
-                <div
-                  class="flex aspect-square w-full items-center justify-center rounded-lg bg-gray-900/20"
-                >
-                  <div class="flex flex-col items-center space-y-4">
-                    <NuxtImg
-                      src="/nuxt-logo.svg"
-                      class="size-24 opacity-50"
-                      alt="Nuxt Logo"
-                    />
-                    <div class="h-2 w-24 animate-pulse rounded-full bg-gray-700"></div>
+          <CachedComponent
+            cache-key="home-liquid-logo"
+            :cacheable="true"
+          >
+            <ClientOnly>
+              <Suspense>
+                <LiquidLogo
+                  :image-url="isDark ? '/nuxt-logo.svg' : '/nuxt-logo.svg'"
+                  :pattern-scale="1.5"
+                  :liquid="0.1"
+                  :speed="0.3"
+                  :refraction="0.02"
+                  :edge="0.4"
+                  @loaded="handleLogoLoaded"
+                />
+                <template #fallback>
+                  <div
+                    class="flex aspect-square w-full items-center justify-center rounded-lg bg-gray-900/20"
+                  >
+                    <div class="flex flex-col items-center space-y-4">
+                      <NuxtImg
+                        src="/nuxt-logo.svg"
+                        class="size-24 opacity-50"
+                        alt="Nuxt Logo"
+                      />
+                      <div class="h-2 w-24 animate-pulse rounded-full bg-gray-700"></div>
+                    </div>
                   </div>
+                </template>
+              </Suspense>
+            </ClientOnly>
+            <template #fallback>
+              <div
+                class="flex aspect-square w-full items-center justify-center rounded-lg bg-gray-900/20"
+              >
+                <div class="flex flex-col items-center space-y-4">
+                  <NuxtImg
+                    src="/nuxt-logo.svg"
+                    class="size-24 opacity-50"
+                    alt="Nuxt Logo"
+                  />
+                  <div class="h-2 w-24 animate-pulse rounded-full bg-gray-700"></div>
                 </div>
-              </template>
-            </Suspense>
-          </ClientOnly>
+              </div>
+            </template>
+          </CachedComponent>
         </div>
       </div>
     </div>
@@ -70,46 +89,70 @@
 
     <!-- Matter Card with Stellar Background Section -->
     <div class="my-16 w-full max-w-7xl">
-      <LazyWarpBackground
-        class="rounded-xl border-none p-0 md:p-12"
-        :perspective="170"
-        :beam-size="2"
-        :beams-per-side="5"
-        :beam-delay-max="5"
-        :beam-duration="4"
-        grid-color="rgba(255, 255, 255, 0.1)"
+      <CachedComponent
+        cache-key="home-warp-background"
+        :cacheable="true"
       >
-        <div class="flex flex-col items-center justify-center py-12 text-center">
-          <h2
-            class="mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-4xl font-bold text-transparent"
-          >
-            Experience the Matter Card
-          </h2>
-          <p class="mb-12 max-w-2xl text-gray-400">
-            Hover over the card below to see the liquid effect in action. Our components bring your
-            UI to life with subtle, engaging animations.
-          </p>
-
-          <div class="flex flex-wrap items-center justify-center gap-8">
-            <!-- Using the fixed version of the Liquidcard component with strict isolation -->
-            <div
-              class="card-container relative isolate h-[400px] w-[320px] overflow-visible rounded-lg"
+        <LazyWarpBackground
+          class="rounded-xl border-none p-0 md:p-12"
+          :perspective="170"
+          :beam-size="2"
+          :beams-per-side="5"
+          :beam-delay-max="5"
+          :beam-duration="4"
+          grid-color="rgba(255, 255, 255, 0.1)"
+        >
+          <div class="flex flex-col items-center justify-center py-12 text-center">
+            <h2
+              class="mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-4xl font-bold text-transparent"
             >
-              <ClientOnly>
-                <Suspense>
-                  <FixedLiquidcard class="flex flex-col items-center justify-center px-4 py-8">
-                    <NuxtImg
-                      src="/logo-dark.svg"
-                      class="size-16"
-                    />
+              Experience the Matter Card
+            </h2>
+            <p class="mb-12 max-w-2xl text-gray-400">
+              Hover over the card below to see the liquid effect in action. Our components bring
+              your UI to life with subtle, engaging animations.
+            </p>
 
-                    <p
-                      class="mt-4 text-xl font-bold"
-                      style="color: white !important"
-                    >
-                      Hover me
-                    </p>
-                  </FixedLiquidcard>
+            <div class="flex flex-wrap items-center justify-center gap-8">
+              <!-- Using the fixed version of the Liquidcard component with strict isolation -->
+              <div
+                class="card-container relative isolate h-[400px] w-[320px] overflow-visible rounded-lg"
+              >
+                <CachedComponent
+                  cache-key="home-liquid-card"
+                  :cacheable="true"
+                >
+                  <ClientOnly>
+                    <Suspense>
+                      <FixedLiquidcard class="flex flex-col items-center justify-center px-4 py-8">
+                        <NuxtImg
+                          src="/logo-dark.svg"
+                          class="size-16"
+                        />
+
+                        <p
+                          class="mt-4 text-xl font-bold"
+                          style="color: white !important"
+                        >
+                          Hover me
+                        </p>
+                      </FixedLiquidcard>
+                      <template #fallback>
+                        <div
+                          class="flex h-[400px] w-[320px] flex-col items-center justify-center rounded-lg bg-gray-900/30 px-4 py-8"
+                        >
+                          <div class="flex flex-col items-center space-y-4">
+                            <NuxtImg
+                              src="/logo-dark.svg"
+                              class="size-16"
+                            />
+                            <p class="mt-4 text-xl font-bold text-white">Loading...</p>
+                            <div class="h-2 w-24 animate-pulse rounded-full bg-gray-700"></div>
+                          </div>
+                        </div>
+                      </template>
+                    </Suspense>
+                  </ClientOnly>
                   <template #fallback>
                     <div
                       class="flex h-[400px] w-[320px] flex-col items-center justify-center rounded-lg bg-gray-900/30 px-4 py-8"
@@ -124,12 +167,22 @@
                       </div>
                     </div>
                   </template>
-                </Suspense>
-              </ClientOnly>
+                </CachedComponent>
+              </div>
             </div>
           </div>
-        </div>
-      </LazyWarpBackground>
+        </LazyWarpBackground>
+        <template #fallback>
+          <div
+            class="flex min-h-[400px] w-full items-center justify-center rounded-xl border border-gray-800 bg-gray-900/30"
+          >
+            <div class="flex flex-col items-center space-y-4">
+              <div class="size-12 animate-spin rounded-full border-y-2 border-white"></div>
+              <p class="text-lg text-white">Loading background...</p>
+            </div>
+          </div>
+        </template>
+      </CachedComponent>
     </div>
   </div>
 </template>
@@ -137,6 +190,7 @@
 <script setup lang="ts">
 import { useSeo } from "~/composables/useSeo";
 import { useSchemaOrg } from "~/composables/useSchemaOrg";
+import { useComponentCache } from "~/composables/useComponentCache";
 import WarpBackground from "~/components/content/inspira/ui/warp-background/WarpBackground.vue";
 import FixedLiquidcard from "~/components/content/common/FixedLiquidcard.vue";
 
@@ -149,21 +203,39 @@ const componentsLoaded = ref({
   card: false,
 });
 
+// Check if we have cached components
+const { isComponentLoaded } = useComponentCache();
+const hasCachedComponents = computed(() => {
+  if (import.meta.server) return false;
+  return (
+    isComponentLoaded("home-liquid-logo") ||
+    isComponentLoaded("home-warp-background") ||
+    isComponentLoaded("home-liquid-card")
+  );
+});
+
 // Set body background to ensure the starry background shows through
 onMounted(() => {
   document.body.classList.add("bg-black");
 
-  // Add a minimum loading time to prevent flickering
-  setTimeout(() => {
-    if (componentsLoaded.value.logo) {
+  // If we have cached components, reduce loading time
+  if (hasCachedComponents.value) {
+    setTimeout(() => {
       isLoading.value = false;
-    } else {
-      // Force hide loading after 3 seconds even if components aren't ready
-      setTimeout(() => {
+    }, 500);
+  } else {
+    // Add a minimum loading time to prevent flickering
+    setTimeout(() => {
+      if (componentsLoaded.value.logo) {
         isLoading.value = false;
-      }, 2000);
-    }
-  }, 1000);
+      } else {
+        // Force hide loading after 3 seconds even if components aren't ready
+        setTimeout(() => {
+          isLoading.value = false;
+        }, 2000);
+      }
+    }, 1000);
+  }
 });
 
 function handleLogoLoaded() {
