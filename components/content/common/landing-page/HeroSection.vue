@@ -1,7 +1,7 @@
 <template>
   <section
     :class="[
-      'relative mx-auto flex min-h-[52rem] max-w-[800px] flex-col items-center justify-center gap-2 py-8 max-sm:min-h-[28rem] lg:py-24 lg:pb-20 md:py-12 md:pb-8',
+      'relative mx-auto flex min-h-[52rem] max-w-[800px] flex-col items-center justify-center gap-2 py-8 max-sm:min-h-[28rem] lg:py-24 lg:pb-20 md:py-12 md:pb-8 z-10',
       {
         'opacity-0': !isContentReady,
         'opacity-100 transition-opacity duration-500': isContentReady,
@@ -9,32 +9,34 @@
     ]"
   >
     <ClientOnly>
-      <Particles
-        :particle-count="isDark ? 300 : 250"
-        :particle-spread="15"
-        :speed="0.07"
-        :particle-colors="
-          isDark
-            ? ['#ffffff', '#a855f7', '#6366f1', '#ec4899']
-            : ['#000000', '#a855f7', '#6366f1', '#ec4899']
-        "
-        :move-particles-on-hover="true"
-        :particle-hover-factor="1.5"
-        :alpha-particles="false"
-        :particle-base-size="isDark ? 120 : 100"
-        :size-randomness="1"
-        :camera-distance="20"
-      />
+      <div class="pointer-events-none">
+        <Particles
+          :particle-count="isDark ? 300 : 250"
+          :particle-spread="15"
+          :speed="0.07"
+          :particle-colors="
+            isDark
+              ? ['#ffffff', '#a855f7', '#6366f1', '#ec4899']
+              : ['#000000', '#a855f7', '#6366f1', '#ec4899']
+          "
+          :move-particles-on-hover="true"
+          :particle-hover-factor="1.5"
+          :alpha-particles="false"
+          :particle-base-size="isDark ? 120 : 100"
+          :size-randomness="1"
+          :camera-distance="20"
+        />
+      </div>
       <template #fallback>
         <div class="fixed inset-0 z-[-3] bg-gradient-to-b from-transparent to-gray-900/20"></div>
       </template>
     </ClientOnly>
     <span
-      class="fixed top-0 z-[-1] h-screen w-full bg-white opacity-30 dark:bg-black dark:opacity-60"
+      class="fixed top-0 z-[-1] h-screen w-full bg-white opacity-30 dark:bg-black dark:opacity-60 pointer-events-none"
     ></span>
 
     <!-- Creative Get Started Button -->
-    <div class="flex w-full justify-center">
+    <div class="flex w-full justify-center z-10">
       <button
         ref="buttonContainer"
         class="group relative mb-8 mt-2 overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
@@ -137,7 +139,7 @@
     </div>
 
     <h1
-      class="text-center text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] md:text-6xl"
+      class="text-center text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] md:text-6xl z-10"
     >
       <span
         class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
@@ -176,11 +178,14 @@
       UI components
     </h1>
 
-    <span class="mt-4 text-center text-lg text-gray-600 sm:text-xl dark:text-gray-200">
+    <span class="mt-4 text-center text-lg text-gray-600 sm:text-xl dark:text-gray-200 z-10">
       Ship faster with our expertly crafted, ready-to-use UI components for Vue & Nuxt developers
     </span>
-    <div class="mt-6 flex w-full items-center justify-center space-x-6 py-4 md:pb-10">
-      <NuxtLink to="/getting-started/introduction">
+    <div class="mt-6 flex w-full items-center justify-center space-x-6 py-4 md:pb-10 z-10">
+      <NuxtLink
+        to="/getting-started/introduction"
+        class="relative z-30"
+      >
         <UiButton
           size="lg"
           class="px-6"
@@ -191,6 +196,7 @@
       <NuxtLink
         to="https://github.com/inivert/unite-ui"
         target="_blank"
+        class="relative z-30"
       >
         <UiButton
           variant="outline"
@@ -309,7 +315,12 @@ function animateRocketAndNavigate() {
   const timeline = anime.timeline({
     easing: "easeOutQuad",
     complete: () => {
+      // Use router.push for navigation
       router.push("/getting-started/introduction");
+      // Reset animation state after navigation
+      setTimeout(() => {
+        isAnimating.value = false;
+      }, 100);
     },
   });
 
@@ -373,5 +384,23 @@ function animateRocketAndNavigate() {
   50% {
     transform: translateY(-5px);
   }
+}
+
+/* Ensure all buttons and links are clickable */
+a,
+button,
+.UiButton,
+[role="button"] {
+  position: relative;
+  z-index: 30 !important;
+  pointer-events: auto !important;
+}
+
+/* Make sure NuxtLink is clickable */
+.NuxtLink-active,
+.NuxtLink {
+  position: relative;
+  z-index: 30 !important;
+  pointer-events: auto !important;
 }
 </style>

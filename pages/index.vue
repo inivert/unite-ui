@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center justify-center bg-transparent px-4 py-6 font-heading md:px-8"
+    class="flex flex-col items-center justify-center bg-transparent px-4 py-6 font-heading md:px-8 relative z-10"
   >
     <!-- Page-level loading state -->
     <div
@@ -73,13 +73,14 @@
         </div>
       </div>
     </div>
-    <div class="mb-16 flex w-full flex-col items-center">
+    <div class="mb-16 flex w-full flex-col items-center relative z-20">
       <a
         href="https://x.com/cmejia_dev"
         target="_blank"
+        class="relative z-50"
       >
         <UiButton
-          class="gap-2 py-6 text-base"
+          class="gap-2 py-6 text-base relative z-50"
           variant="secondary"
         >
           Become a hater <span class="text-red-500">♥️</span>
@@ -102,7 +103,7 @@
           :beam-duration="4"
           grid-color="rgba(255, 255, 255, 0.1)"
         >
-          <div class="flex flex-col items-center justify-center py-12 text-center">
+          <div class="flex flex-col items-center justify-center py-12 text-center relative z-50">
             <h2
               class="mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-4xl font-bold text-transparent"
             >
@@ -272,6 +273,7 @@ useSchemaOrg({
   z-index: 1;
   transform-style: preserve-3d;
   perspective: 1200px;
+  pointer-events: auto;
 }
 
 /* Add fade-in animation for content */
@@ -286,5 +288,15 @@ useSchemaOrg({
 
 .fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Ensure all buttons and links are clickable */
+a,
+button,
+.UiButton,
+[role="button"] {
+  position: relative;
+  z-index: 50 !important;
+  pointer-events: auto !important;
 }
 </style>
