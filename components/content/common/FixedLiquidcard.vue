@@ -110,6 +110,19 @@ function handlePointerMove(event: PointerEvent) {
       Math.pow((percentage.x - 50) / 50, 2) + Math.pow((percentage.y - 50) / 50, 2),
     );
     state.value.reflectionOpacity = Math.max(0, 1 - distanceFromCenter);
+
+    // Add dynamic rotation based on mouse position when card is hovered
+    if (isCardHovered.value && refElement.value) {
+      const cardWrapper = refElement.value.querySelector(".card-wrapper") as HTMLElement;
+      if (cardWrapper) {
+        // Calculate rotation angles based on mouse position
+        const rotateY = ((percentage.x - 50) / 50) * 10; // -10 to 10 degrees
+        const rotateX = ((50 - percentage.y) / 50) * 10; // -10 to 10 degrees
+
+        // Apply the rotation transformation
+        cardWrapper.style.transform = `rotateX(${20 + rotateX}deg) rotateY(${-10 + rotateY}deg) translateZ(30px) scale(1.05)`;
+      }
+    }
   }
 }
 
@@ -132,6 +145,20 @@ function handlePointerLeave() {
   isFullyExtended.value = false;
   if (refElement.value) {
     refElement.value.style.removeProperty("--duration");
+
+    // Reset the card wrapper rotation smoothly
+    const cardWrapper = refElement.value.querySelector(".card-wrapper") as HTMLElement;
+    if (cardWrapper) {
+      cardWrapper.style.transition = "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+      cardWrapper.style.transform = "translateZ(0) scale(1)";
+
+      // Reset the transition after the animation completes
+      useTimeoutFn(() => {
+        if (cardWrapper) {
+          cardWrapper.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        }
+      }, 800);
+    }
   }
 }
 
@@ -343,6 +370,7 @@ function handleCardLeave() {
   --radius: 16px;
   --easing: ease;
   --transition: var(--duration) var(--easing);
+  perspective: 1500px;
 }
 
 /* Animation for the color shift when not hovering */
@@ -506,34 +534,39 @@ function handleCardLeave() {
 
 /* Hover effects for the card wrapper */
 .card-hovered .card-wrapper {
-  transform: rotateX(13deg) rotateY(-3deg) translateZ(20px);
+  transform: rotateX(20deg) rotateY(-10deg) translateZ(30px) scale(1.05);
   transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Hover effects for the sheets - ensure they move exactly like the main card */
 .card-hovered .sheet-1 {
-  transform: translateZ(-5px) translateY(5px) translateX(5px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-8px) translateY(8px) translateX(8px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 8px 16px var(--shadow-color);
 }
 
 .card-hovered .sheet-2 {
-  transform: translateZ(-10px) translateY(10px) translateX(10px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-16px) translateY(16px) translateX(16px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 12px 20px var(--shadow-color);
 }
 
 .card-hovered .sheet-3 {
-  transform: translateZ(-15px) translateY(15px) translateX(15px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-24px) translateY(24px) translateX(24px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 16px 24px var(--shadow-color);
 }
 
 .card-hovered .sheet-4 {
-  transform: translateZ(-20px) translateY(20px) translateX(20px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-32px) translateY(32px) translateX(32px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 20px 28px var(--shadow-color);
 }
 
 /* Main card hover effect */
 .card-hovered .main-card {
-  box-shadow: 0 15px 30px var(--shadow-color);
+  box-shadow: 0 25px 40px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
 }
@@ -573,5 +606,11 @@ function handleCardLeave() {
 .theme-dark .main-card::before,
 .theme-light .main-card::before {
   display: none;
+}
+
+/* Card wrapper transition */
+.card-wrapper {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateZ(0) scale(1);
 }
 </style>

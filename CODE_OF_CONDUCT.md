@@ -42,7 +42,7 @@ The following behaviors are considered unacceptable within our community:
 
 If you experience or witness unacceptable behavior, or have any other concerns, please report it as soon as possible by contacting the project maintainers on our **Discord channel**:
 
-[Inspira UI Discord Channel](https://discord.gg/Xbh5DwJRc9)
+[Inspira UI Discord Channel](https://discord.gg/JW3Zzu6a)
 
 When reporting an incident, please include:
 
@@ -90,4 +90,4 @@ We thank all contributors and community members for helping to create a positive
 
 For questions or concerns about this Code of Conduct, please contact the project maintainers on our **Discord channel**:
 
-[Inspira UI Discord Channel](https://discord.gg/Xbh5DwJRc9)
+[Inspira UI Discord Channel](https://discord.gg/JW3Zzu6a)

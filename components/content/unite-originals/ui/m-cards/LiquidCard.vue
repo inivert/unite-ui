@@ -15,9 +15,15 @@
     }"
     @pointermove="handlePointerMove"
   >
-    <div class="card-wrapper relative transition-all duration-500" style="transform-style: preserve-3d;">
+    <div
+      class="card-wrapper relative transition-all duration-500"
+      style="transform-style: preserve-3d"
+    >
       <!-- Stacked sheets that appear on hover -->
-      <div class="sheet-stack absolute inset-0" style="transform-style: preserve-3d;">
+      <div
+        class="sheet-stack absolute inset-0"
+        style="transform-style: preserve-3d"
+      >
         <div class="sheet sheet-4"></div>
         <div class="sheet sheet-3"></div>
         <div class="sheet sheet-2"></div>
@@ -27,7 +33,7 @@
       <!-- Main card -->
       <div
         class="main-card duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] relative grid h-full origin-center overflow-hidden rounded-lg border transition-all will-change-transform hover:shadow-lg hover:filter-none hover:[--border-opacity:0.8] hover:[--duration:200ms] hover:[--easing:linear]"
-        style="transform-style: preserve-3d;"
+        style="transform-style: preserve-3d"
         @pointerenter="handleCardEnter"
         @pointerleave="handleCardLeave"
       >
@@ -118,6 +124,19 @@ function handlePointerMove(event: PointerEvent) {
       Math.pow((percentage.x - 50) / 50, 2) + Math.pow((percentage.y - 50) / 50, 2),
     );
     state.value.reflectionOpacity = Math.max(0, 1 - distanceFromCenter);
+
+    // Add dynamic rotation based on mouse position when card is hovered
+    if (isCardHovered.value && refElement.value) {
+      const cardWrapper = refElement.value.querySelector(".card-wrapper") as HTMLElement;
+      if (cardWrapper) {
+        // Calculate rotation angles based on mouse position
+        const rotateY = ((percentage.x - 50) / 50) * 10; // -10 to 10 degrees
+        const rotateX = ((50 - percentage.y) / 50) * 10; // -10 to 10 degrees
+
+        // Apply the rotation transformation
+        cardWrapper.style.transform = `rotateX(${20 + rotateX}deg) rotateY(${-10 + rotateY}deg) translateZ(30px) scale(1.05)`;
+      }
+    }
   }
 }
 
@@ -140,9 +159,23 @@ function handleCardLeave() {
   isPointerInside.value = false;
   isFullyExtended.value = false;
   isCardHovered.value = false;
-  
+
   if (refElement.value) {
     refElement.value.style.removeProperty("--duration");
+
+    // Reset the card wrapper rotation smoothly
+    const cardWrapper = refElement.value.querySelector(".card-wrapper") as HTMLElement;
+    if (cardWrapper) {
+      cardWrapper.style.transition = "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+      cardWrapper.style.transform = "translateZ(0) scale(1)";
+
+      // Reset the transition after the animation completes
+      setTimeout(() => {
+        if (cardWrapper) {
+          cardWrapper.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        }
+      }, 800);
+    }
   }
 }
 
@@ -200,6 +233,9 @@ function handlePointerLeave() {
   box-shadow: 0 4px 8px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
+  transition:
+    box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .color-shift-style {
@@ -347,7 +383,7 @@ function handlePointerLeave() {
   --radius: 16px;
   --easing: ease;
   --delay: 0ms;
-  perspective: 1200px;
+  perspective: 1500px;
 }
 
 /* Animation for the color shift when not hovering */
@@ -505,33 +541,38 @@ function handlePointerLeave() {
 
 /* Hover effects for the card wrapper */
 .card-hovered .card-wrapper {
-  transform: rotateX(13deg) rotateY(-3deg) translateZ(20px);
+  transform: rotateX(20deg) rotateY(-10deg) translateZ(30px) scale(1.05);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Hover effects for the sheets - ensure they move exactly like the main card */
 .card-hovered .sheet-1 {
-  transform: translateZ(-5px) translateY(5px) translateX(5px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-8px) translateY(8px) translateX(8px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 8px 16px var(--shadow-color);
 }
 
 .card-hovered .sheet-2 {
-  transform: translateZ(-10px) translateY(10px) translateX(10px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-16px) translateY(16px) translateX(16px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 12px 20px var(--shadow-color);
 }
 
 .card-hovered .sheet-3 {
-  transform: translateZ(-15px) translateY(15px) translateX(15px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-24px) translateY(24px) translateX(24px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 16px 24px var(--shadow-color);
 }
 
 .card-hovered .sheet-4 {
-  transform: translateZ(-20px) translateY(20px) translateX(20px) rotateX(0deg) rotateY(0deg);
+  transform: translateZ(-32px) translateY(32px) translateX(32px) rotateX(0deg) rotateY(0deg);
   opacity: 1;
+  box-shadow: 0 20px 28px var(--shadow-color);
 }
 
 /* Main card hover effect */
 .card-hovered .main-card {
-  box-shadow: 0 15px 30px var(--shadow-color);
+  box-shadow: 0 25px 40px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
 }
@@ -541,6 +582,9 @@ function handlePointerLeave() {
   box-shadow: 0 4px 8px var(--shadow-color);
   transform: translateZ(0);
   overflow: visible;
+  transition:
+    box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Remove the individual card transformation since we're transforming the wrapper */
@@ -570,5 +614,11 @@ function handlePointerLeave() {
 .theme-dark .main-card::before,
 .theme-light .main-card::before {
   display: none;
+}
+
+/* Card wrapper transition */
+.card-wrapper {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateZ(0) scale(1);
 }
 </style>

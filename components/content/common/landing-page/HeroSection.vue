@@ -9,165 +9,197 @@
     ]"
   >
     <ClientOnly>
-      <LazyParticlesBg
-        class="fixed inset-0 z-[-3]"
-        :quantity="150"
-        :ease="100"
-        :color="isDark ? '#FFF' : '#000'"
-        :staticity="20"
-        refresh
+      <Particles
+        :particle-count="isDark ? 300 : 250"
+        :particle-spread="15"
+        :speed="0.07"
+        :particle-colors="
+          isDark
+            ? ['#ffffff', '#a855f7', '#6366f1', '#ec4899']
+            : ['#000000', '#a855f7', '#6366f1', '#ec4899']
+        "
+        :move-particles-on-hover="true"
+        :particle-hover-factor="1.5"
+        :alpha-particles="false"
+        :particle-base-size="isDark ? 120 : 100"
+        :size-randomness="1"
+        :camera-distance="20"
       />
       <template #fallback>
         <div class="fixed inset-0 z-[-3] bg-gradient-to-b from-transparent to-gray-900/20"></div>
       </template>
     </ClientOnly>
     <span
-      class="fixed top-0 z-[-1] h-screen w-full bg-white opacity-40 dark:bg-black dark:opacity-50"
+      class="fixed top-0 z-[-1] h-screen w-full bg-white opacity-30 dark:bg-black dark:opacity-60"
     ></span>
 
     <!-- Creative Get Started Button -->
-    <button
-      ref="buttonContainer"
-      class="group relative mb-4 overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px] transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25"
-      @click="animateRocketAndNavigate"
-      @mouseenter="handleButtonEnter"
-      @mouseleave="handleButtonLeave"
-    >
-      <div
-        class="relative flex items-center rounded-full bg-white/90 px-6 py-2.5 transition-all duration-300 group-hover:bg-opacity-0 dark:bg-gray-900 dark:group-hover:bg-opacity-0"
+    <div class="flex w-full justify-center">
+      <button
+        ref="buttonContainer"
+        class="group relative mb-8 mt-2 overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[2px] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
+        @click="animateRocketAndNavigate"
+        @mouseenter="handleButtonEnter"
+        @mouseleave="handleButtonLeave"
       >
         <div
-          ref="rocketContainer"
-          class="inline-block"
+          class="relative flex items-center justify-center rounded-full bg-white/90 px-8 py-3 transition-all duration-300 group-hover:bg-opacity-0 dark:bg-gray-900 dark:group-hover:bg-opacity-0"
         >
-          <SmartIcon
-            ref="rocketIcon"
-            name="lucide:rocket"
-            class="size-5 text-gray-800 transition-transform duration-300 group-hover:rotate-45 group-hover:text-white dark:text-white"
+          <div
+            ref="rocketContainer"
+            class="inline-flex items-center justify-center"
+          >
+            <SmartIcon
+              ref="rocketIcon"
+              name="lucide:rocket"
+              class="size-5 text-gray-800 transition-transform duration-300 group-hover:rotate-45 group-hover:text-white dark:text-white"
+            />
+          </div>
+          <span
+            ref="buttonText"
+            class="ml-2 font-medium text-gray-800 group-hover:text-white dark:text-white"
+            >Get Started</span
+          >
+          <Icon
+            ref="arrowIcon"
+            name="lucide:arrow-right"
+            class="ml-2 size-4 text-gray-800 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white dark:text-white"
           />
-        </div>
-        <span
-          ref="buttonText"
-          class="ml-2 font-medium text-gray-800 group-hover:text-white dark:text-white"
-          >Get Started</span
-        >
-        <Icon
-          ref="arrowIcon"
-          name="lucide:arrow-right"
-          class="ml-2 size-4 text-gray-800 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white dark:text-white"
-        />
 
-        <!-- Animated particles on hover -->
-        <div
-          ref="hoverParticles"
-          class="absolute -top-10 left-0 size-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        >
+          <!-- Animated particles on hover -->
           <div
-            class="absolute size-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 blur-[1px]"
-            style="left: 10%; top: 50%; animation: float 3s ease-in-out infinite"
-          ></div>
+            ref="hoverParticles"
+            class="absolute -top-10 left-0 size-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          >
+            <div
+              class="absolute size-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 blur-[1px]"
+              style="left: 10%; top: 50%; animation: float 3s ease-in-out infinite"
+            ></div>
+            <div
+              class="absolute size-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 blur-[1px]"
+              style="left: 20%; top: 30%; animation: float 4s ease-in-out infinite 0.5s"
+            ></div>
+            <div
+              class="absolute size-1 rounded-full bg-gradient-to-r from-pink-400 to-indigo-400 blur-[1px]"
+              style="left: 30%; top: 60%; animation: float 3.5s ease-in-out infinite 1s"
+            ></div>
+          </div>
+
+          <!-- Rocket trail animation elements -->
           <div
-            class="absolute size-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 blur-[1px]"
-            style="left: 20%; top: 30%; animation: float 4s ease-in-out infinite 0.5s"
-          ></div>
+            ref="rocketTrail"
+            class="absolute left-5 top-1/2 -z-10 flex -translate-y-1/2 space-x-1 opacity-0"
+          >
+            <div
+              class="size-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 blur-[1px]"
+            ></div>
+            <div
+              class="size-2 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 blur-[1px]"
+            ></div>
+            <div
+              class="size-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-300 blur-[1px]"
+            ></div>
+          </div>
+
+          <!-- Additional trail particles that appear during animation -->
           <div
-            class="absolute size-1 rounded-full bg-gradient-to-r from-pink-400 to-indigo-400 blur-[1px]"
-            style="left: 30%; top: 60%; animation: float 3.5s ease-in-out infinite 1s"
+            ref="extraTrail"
+            class="absolute left-0 top-1/2 -z-10 -translate-y-1/2 opacity-0"
+          >
+            <div
+              class="absolute size-1 rounded-full bg-gradient-to-r from-orange-300 to-yellow-300 blur-[1px]"
+              style="left: 2px; top: -3px"
+            ></div>
+            <div
+              class="absolute size-1 rounded-full bg-gradient-to-r from-yellow-300 to-orange-200 blur-[1px]"
+              style="left: 6px; top: 3px"
+            ></div>
+            <div
+              class="absolute size-0.5 rounded-full bg-gradient-to-r from-orange-200 to-yellow-200 blur-[1px]"
+              style="left: 10px; top: -2px"
+            ></div>
+          </div>
+
+          <!-- Button glow effect -->
+          <div
+            class="absolute inset-0 -z-10 rounded-full opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-30 dark:group-hover:opacity-40"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(99, 102, 241, 1) 0%,
+                rgba(168, 85, 247, 1) 50%,
+                rgba(236, 72, 153, 1) 100%
+              );
+            "
           ></div>
         </div>
-
-        <!-- Rocket trail animation elements -->
-        <div
-          ref="rocketTrail"
-          class="absolute left-5 top-1/2 -z-10 flex -translate-y-1/2 space-x-1 opacity-0"
-        >
-          <div
-            class="size-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 blur-[1px]"
-          ></div>
-          <div
-            class="size-2 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 blur-[1px]"
-          ></div>
-          <div
-            class="size-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-300 blur-[1px]"
-          ></div>
-        </div>
-
-        <!-- Additional trail particles that appear during animation -->
-        <div
-          ref="extraTrail"
-          class="absolute left-0 top-1/2 -z-10 -translate-y-1/2 opacity-0"
-        >
-          <div
-            class="absolute size-1 rounded-full bg-gradient-to-r from-orange-300 to-yellow-300 blur-[1px]"
-            style="left: 2px; top: -3px"
-          ></div>
-          <div
-            class="absolute size-1 rounded-full bg-gradient-to-r from-yellow-300 to-orange-200 blur-[1px]"
-            style="left: 6px; top: 3px"
-          ></div>
-          <div
-            class="absolute size-0.5 rounded-full bg-gradient-to-r from-orange-200 to-yellow-200 blur-[1px]"
-            style="left: 10px; top: -2px"
-          ></div>
-        </div>
-
-        <!-- Button glow effect -->
-        <div
-          class="absolute inset-0 -z-10 rounded-full opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-30 dark:group-hover:opacity-40"
-          style="
-            background: linear-gradient(
-              90deg,
-              rgba(99, 102, 241, 1) 0%,
-              rgba(168, 85, 247, 1) 50%,
-              rgba(236, 72, 153, 1) 100%
-            );
-          "
-        ></div>
-      </div>
-    </button>
+      </button>
+    </div>
 
     <h1
       class="text-center text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] md:text-6xl"
     >
-      Build
+      <span
+        class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+        >Supercharge</span
+      >
+      your Nuxt apps with
       <ClientOnly>
-        <FlipWords
-          :words="[
-            'modern',
-            'dynamic',
-            'responsive',
-            'beautiful',
-            'stunning',
-            'elegant',
-            'creative',
-            'innovative',
-          ]"
-          :duration="3000"
-          class="inline-block min-w-[150px]"
-        />
+        <div class="inline-block">
+          <RotatingText
+            :texts="[
+              'production-ready',
+              'eye-catching',
+              'blazing-fast',
+              'customizable',
+              'accessible',
+              'stunning',
+              'animated',
+            ]"
+            :rotation-interval="2500"
+            main-class-name="px-0.5 pb-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white overflow-visible pt-0 justify-center rounded-md inline-flex"
+            stagger-from="last"
+            :stagger-duration="0.025"
+            split-level-class-name="overflow-visible"
+            element-level-class-name="font-medium"
+            :transition="{ type: 'spring', damping: 30, stiffness: 400, duration: 0.4 }"
+            transition-name="text-slide"
+          />
+        </div>
         <template #fallback>
-          <span class="inline-block min-w-[150px] text-purple-500">modern</span>
+          <span
+            class="inline-block min-w-[200px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+            >production-ready</span
+          >
         </template>
       </ClientOnly>
-      websites using Vue & Nuxt
+      UI components
     </h1>
 
     <span class="mt-4 text-center text-lg text-gray-600 sm:text-xl dark:text-gray-200">
-      Curated list of amazing UI libraries and components for Nuxt developers, inspired by Inspira
-      UI
+      Ship faster with our expertly crafted, ready-to-use UI components for Vue & Nuxt developers
     </span>
-    <div class="mt-4 flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
+    <div class="mt-6 flex w-full items-center justify-center space-x-6 py-4 md:pb-10">
       <NuxtLink to="/getting-started/introduction">
-        <UiButton> All Components </UiButton>
+        <UiButton
+          size="lg"
+          class="px-6"
+        >
+          All Components
+        </UiButton>
       </NuxtLink>
       <NuxtLink
         to="https://github.com/inivert/unite-ui"
         target="_blank"
       >
-        <UiButton variant="outline">
+        <UiButton
+          variant="outline"
+          size="lg"
+          class="px-6"
+        >
           <SmartIcon
             name="lucide:github"
-            class="mr-1"
+            class="mr-2"
           />
           Github
         </UiButton>
@@ -180,6 +212,8 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import anime from "animejs";
+import Particles from "../../unite-originals/ui/bg-particles";
+import RotatingText from "../../unite-originals/ui/rotating-text";
 
 const isDark = computed(() => useColorMode().value == "dark");
 const router = useRouter();

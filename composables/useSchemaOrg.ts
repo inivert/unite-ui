@@ -30,7 +30,7 @@ export function useSchemaOrg(options: Partial<WebsiteSchema> = {}) {
     },
     sameAs: [
       "https://github.com/inivert/unite-ui",
-      "https://discord.gg/Xbh5DwJRc9",
+      "https://discord.gg/JW3Zzu6a",
       "https://x.com/cmejia_dev",
       "http://bsky.app/profile/unite-ui.com",
     ],

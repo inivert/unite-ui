@@ -88,7 +88,7 @@ export default defineAppConfig({
             },
             {
               title: "Discord",
-              to: "https://discord.gg/Xbh5DwJRc9",
+              to: "https://discord.gg/JW3Zzu6a",
               description: "Connect with community on Discord",
               target: "_blank",
             },
@@ -114,7 +114,7 @@ export default defineAppConfig({
         },
         {
           icon: "ri:discord-line",
-          to: "https://discord.gg/Xbh5DwJRc9",
+          to: "https://discord.gg/JW3Zzu6a",
           target: "_blank",
         },
         {
@@ -172,7 +172,7 @@ export default defineAppConfig({
         {
           title: "Join Discord",
           icon: "ri:discord-line",
-          to: "https://discord.gg/Xbh5DwJRc9",
+          to: "https://discord.gg/JW3Zzu6a",
           target: "_blank",
         },
         {
