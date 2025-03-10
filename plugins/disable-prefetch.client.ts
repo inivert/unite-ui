@@ -5,14 +5,14 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Wait for the app to be mounted
   nuxtApp.hook("app:mounted", () => {
     // Disable prefetching on all links
-    const disablePrefetch = () => {
+    function disablePrefetch() {
       const links = document.querySelectorAll("a");
       links.forEach((link) => {
         if (link.hasAttribute("data-prefetch")) {
           link.removeAttribute("data-prefetch");
         }
       });
-    };
+    }
 
     // Run initially
     disablePrefetch();

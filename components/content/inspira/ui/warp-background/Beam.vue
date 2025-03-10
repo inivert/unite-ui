@@ -3,8 +3,8 @@
     :style="{
       '--x': `${props.x}`,
       '--width': `${props.width}`,
-      '--aspect-ratio': `${ar}`,
-      '--background': `linear-gradient(hsl(${hue} 80% 60%), transparent)`,
+      '--aspect-ratio': `${aspectRatio}`,
+      '--background': `linear-gradient(hsl(${hueValue} 80% 60%), transparent)`,
     }"
     class="absolute left-[var(--x)] top-0 [aspect-ratio:1/var(--aspect-ratio)] [background:var(--background)] [width:var(--width)]"
     :initial="{
@@ -32,11 +32,28 @@ interface Props {
   x: string | number;
   delay: number;
   duration: number;
+  seed?: string; // Optional seed for deterministic values
 }
 const props = defineProps<Props>();
 
-const hue = computed(() => Math.floor(Math.random() * 360));
-const ar = computed(() => Math.floor(Math.random() * 10) + 1);
+// Extract a numeric value from the x position for deterministic calculations
+const xValue = computed(() => {
+  const xStr = String(props.x);
+  const numericValue = parseFloat(xStr);
+  return isNaN(numericValue) ? 0 : numericValue;
+});
+
+// Generate a deterministic hue based on the x position
+const hueValue = computed(() => {
+  // Use the x value to generate a deterministic hue (0-359)
+  return Math.abs(Math.round(xValue.value * 17) % 360);
+});
+
+// Generate a deterministic aspect ratio based on the x position
+const aspectRatio = computed(() => {
+  // Use the x value to generate a deterministic aspect ratio (1-10)
+  return Math.abs(Math.round(xValue.value * 13) % 10) + 1;
+});
 </script>
 
 <style></style>

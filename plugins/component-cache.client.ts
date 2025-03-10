@@ -6,7 +6,7 @@ import { defineNuxtPlugin } from "#app";
  */
 export default defineNuxtPlugin((nuxtApp) => {
   // Only run in client-side
-  if (process.server) return;
+  if (import.meta.server) return;
 
   const CACHE_VERSION = "1.0.0";
   const CACHE_PREFIX = "unite-ui-component-cache:";
@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const loadedComponents = new Map();
 
   // Function to get cached component
-  const getCache = (key: string) => {
+  function getCache(key: string) {
     try {
       const cacheKey = `${CACHE_PREFIX}${key}`;
       const cachedData = localStorage.getItem(cacheKey);
@@ -33,13 +33,13 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       return data;
     } catch (error) {
-      console.error("Error retrieving from cache:", error);
+      // Error retrieving from cache
       return null;
     }
-  };
+  }
 
   // Function to set cache
-  const setCache = (key: string, data: any) => {
+  function setCache(key: string, data: unknown) {
     try {
       const cacheKey = `${CACHE_PREFIX}${key}`;
       const cacheData = {
@@ -53,14 +53,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       // Also store in memory for current session
       loadedComponents.set(key, data);
     } catch (error) {
-      console.error("Error setting cache:", error);
+      // Error setting cache
     }
-  };
+  }
 
   // Function to check if component is in memory cache
-  const isInMemoryCache = (key: string) => {
+  function isInMemoryCache(key: string) {
     return loadedComponents.has(key);
-  };
+  }
 
   // Add cache helpers to nuxtApp
   nuxtApp.provide("componentCache", {
@@ -70,7 +70,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   // Clean up old cache entries on app start
-  const cleanupCache = () => {
+  function cleanupCache() {
     try {
       Object.keys(localStorage).forEach((key) => {
         if (key.startsWith(CACHE_PREFIX)) {
@@ -85,9 +85,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       });
     } catch (error) {
-      console.error("Error cleaning cache:", error);
+      // Error cleaning cache
     }
-  };
+  }
 
   // Run cleanup on app start
   cleanupCache();

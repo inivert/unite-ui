@@ -44,15 +44,15 @@ export default defineNuxtConfig({
   vite: {
     server: {
       hmr: {
+        // Simplified HMR configuration
         protocol: "ws",
         host: "localhost",
-        port: 24678,
-        clientPort: 24678,
-        timeout: 1000,
+        // Remove explicit port settings to let Vite choose available ports
+        timeout: 5000, // Increased timeout for better connection stability
       },
       watch: {
-        usePolling: true,
-        interval: 500, // Faster polling interval
+        usePolling: false, // Changed to false as polling can cause performance issues
+        interval: 1000,
         ignored: ["**/node_modules/**", "**/.git/**"],
       },
     },
